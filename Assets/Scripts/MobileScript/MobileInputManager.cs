@@ -188,7 +188,26 @@ public class MobileInputManager : MonoBehaviour
 #endif
     }
 
-    public bool GetInteractDown() => MobilePressed(ref interactPressed) || Input.GetKeyDown(KeyCode.F);
+    // 「本帧交互键已被消费」的帧号。
+    // Input.GetKeyDown 在同一帧对所有调用者都返回 true，
+    // 而诗碑上同时挂着 PoemExplain 与 PoemImageGN，两者都在 Update 里轮询交互键，
+    // 结果按一次 F 会同时打开「诗词释义」和「诗词配图」。
+    // 这里保证一次按键只被一个系统消费。
+    private int interactConsumedFrame = -1;
+
+    public bool GetInteractDown()
+    {
+        if (interactConsumedFrame == Time.frameCount)
+            return false;
+
+        bool down = MobilePressed(ref interactPressed) || Input.GetKeyDown(KeyCode.F);
+
+        if (down)
+            interactConsumedFrame = Time.frameCount;
+
+        return down;
+    }
+
     public bool GetAttackDown() => MobilePressed(ref attackPressed) || Input.GetKeyDown(KeyCode.J);
     public bool GetShootDown() => MobilePressed(ref shootPressed) || Input.GetKeyDown(KeyCode.K);
     public bool GetAudioDown() => MobilePressed(ref audioPressed) || Input.GetKeyDown(KeyCode.Z);

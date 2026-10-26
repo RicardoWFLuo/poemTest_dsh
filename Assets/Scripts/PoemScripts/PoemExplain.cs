@@ -38,8 +38,11 @@ public class PoemExplain : MonoBehaviour
         if (!MobileInputManager.Instance.GetInteractDown())
             return;
 
-        bool isCanvasActive = PoemManager.Instance.poemTextCanvas != null &&
-                              PoemManager.Instance.poemTextCanvas.gameObject.activeSelf;
+        // 配图面板开着时不抢占交互键（双保险，避免释义与绘画同时出现）
+        if (PoemManager.Instance.IsImageCanvasOpen)
+            return;
+
+        bool isCanvasActive = PoemManager.Instance.IsTextCanvasOpen;
         bool isGenerating = PoemManager.Instance.isTextGenerating;
 
         if (isGenerating)

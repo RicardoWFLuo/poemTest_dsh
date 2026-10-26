@@ -37,8 +37,11 @@ public class PoemImageGN : MonoBehaviour
         if (!MobileInputManager.Instance.GetInteractDown())
             return;
 
-        bool isCanvasActive = PoemManager.Instance.poemImageCanvas != null &&
-                              PoemManager.Instance.poemImageCanvas.gameObject.activeSelf;
+        // 释义面板开着时不抢占交互键（双保险，避免释义与绘画同时出现）
+        if (PoemManager.Instance.IsTextCanvasOpen)
+            return;
+
+        bool isCanvasActive = PoemManager.Instance.IsImageCanvasOpen;
         bool isGenerating = PoemManager.Instance.isImageGenerating;
 
         if (isGenerating)

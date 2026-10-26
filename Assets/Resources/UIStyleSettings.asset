@@ -21,3 +21,6 @@ MonoBehaviour:
   showTitleOnStart: 1
   autoSaveOnSceneChange: 0
   autoSaveOnQuit: 0
+  menuButtonSize: {x: 200, y: 88}
+  menuButtonMargin: {x: 28, y: 28}
+  menuButtonCorner: 0

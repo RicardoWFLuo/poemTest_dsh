@@ -21,4 +21,12 @@ public class PoemSO : ScriptableObject, IIdentifiedAsset
     [Header("AI Generate")]
     public string promptText;
     public string promptImage;
+
+    [Header("内置内容（无 API Key 或生成失败时使用）")]
+    [Tooltip("预置的诗词释义。未配置 AI 密钥或请求失败时直接显示这一段，并在界面上标注为「内置内容」。")]
+    [TextArea(5, 12)]
+    public string builtinExplanation;
+
+    [Tooltip("预置的诗词插画。未配置 AI 密钥或生图失败时显示，并标注为「内置内容」。")]
+    public Sprite builtinIllustration;
 }
