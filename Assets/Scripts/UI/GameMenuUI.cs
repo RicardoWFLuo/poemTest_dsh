@@ -50,6 +50,12 @@ public class GameMenuUI : MonoBehaviour
     private bool SlotsVisible => slotRoot != null && slotRoot.activeSelf;
     private bool AnyOverlayVisible => TitleVisible || MenuVisible || SlotsVisible;
 
+    /// <summary>标题/主菜单/存档界面是否有任意一个开着。供其他 UI 判断互斥。</summary>
+    public bool IsAnyOverlayVisible => AnyOverlayVisible;
+
+    /// <summary>存档界面（读档/存档列表）是否开着。</summary>
+    public bool IsSlotListVisible => SlotsVisible;
+
     // ---------------------------------------------------------------- 生命周期
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

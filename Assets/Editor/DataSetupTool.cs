@@ -124,38 +124,204 @@ public static class DataSetupTool
         return candidates.Count > 0 ? candidates[0] : null;
     }
 
-    /// <summary>找一张现成的精灵图给 AI 助手当形象（随便哪张都行）。</summary>
+    /// <summary>
+    /// 给 AI 助手挑一张形象图。
+    ///
+    /// 注意：项目里的 NPC 图多是「多帧精灵图（Sprite Sheet）」，
+    /// 它们的主资源是 Texture2D，Sprite 是子资源 ——
+    /// 用 LoadAssetAtPath&lt;Sprite&gt; 直接取会返回 null。
+    /// 所以这里既要搜 t:Sprite，也要搜 t:Texture2D 再从里面取子精灵。
+    /// </summary>
     private static Sprite FindAssistantPortrait()
     {
-        string[] preferredNames = { "Pawn_Red", "Pawn_Purple", "RedPoet", "Poet" };
+        string[] preferredNames = { "Warrior_Red", "Pawn_Red", "Pawn_Purple", "RedPoet", "Poet" };
 
+        // 1) 先按偏好名字找（贴图也要搜，因为精灵图的主资源是 Texture2D）
         foreach (string wanted in preferredNames)
         {
-            foreach (string guid in AssetDatabase.FindAssets(wanted + " t:Sprite", new[] { "Assets" }))
+            foreach (string path in FindSpriteCandidatePaths())
             {
-                string path = AssetDatabase.GUIDToAssetPath(guid);
-
-                if (string.IsNullOrEmpty(path))
+                if (path.IndexOf(wanted, System.StringComparison.OrdinalIgnoreCase) < 0)
                     continue;
 
-                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                Sprite sprite = LoadAnySprite(path);
 
                 if (sprite != null)
                     return sprite;
             }
         }
 
-        // 退一步：项目里任意一张精灵图
-        foreach (string guid in AssetDatabase.FindAssets("t:Sprite", new[] { "Assets" }))
+        // 2) 退一步：项目里任意一张能用的精灵
+        foreach (string path in FindSpriteCandidatePaths())
         {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+            Sprite sprite = LoadAnySprite(path);
 
             if (sprite != null)
                 return sprite;
         }
 
         return null;
+    }
+
+    /// <summary>列出所有可能包含 Sprite 的资源路径（含多帧精灵图的贴图）。</summary>
+    private static System.Collections.Generic.List<string> FindSpriteCandidatePaths()
+    {
+        var paths = new System.Collections.Generic.List<string>();
+        var seen = new System.Collections.Generic.HashSet<string>();
+
+        foreach (string filter in new[] { "t:Sprite", "t:Texture2D" })
+        {
+            foreach (string guid in AssetDatabase.FindAssets(filter, new[] { "Assets" }))
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+
+                if (string.IsNullOrEmpty(path) || !seen.Add(path))
+                    continue;
+
+                paths.Add(path);
+            }
+        }
+
+        paths.Sort(System.StringComparer.Ordinal);
+        return paths;
+    }
+
+    /// <summary>
+    /// 从一条资源路径里取出可用的 Sprite：
+    /// 单图直接取；多帧精灵图则取第一个子精灵。
+    /// </summary>
+    private static Sprite LoadAnySprite(string path)
+    {
+        var direct = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+
+        if (direct != null)
+            return direct;
+
+        foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(path))
+        {
+            if (asset is Sprite sprite)
+                return sprite;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 单独给 AI 助手挑一张形象图（不用重建整个 UI 设置资源）。
+    /// 自动挑失败时，也可以自己在 Inspector 里把任意 Sprite 拖到 Assistant Portrait。
+    /// </summary>
+    [MenuItem("Tools/诗词数据/6. 给 AI 助手挑一张形象图", false, 23)]
+    public static void PickAssistantPortrait()
+    {
+        var settings = AssetDatabase.LoadAssetAtPath<UIStyleSettings>(UISettingsPath);
+
+        if (settings == null)
+        {
+            Debug.LogWarning($"[诗词数据] 还没有 {UISettingsPath}。\n" +
+                             "请先执行「0. 创建 UI 设置资源（中文字体）」。");
+            return;
+        }
+
+        Sprite sprite = FindAssistantPortrait();
+
+        if (sprite == null)
+        {
+            Debug.LogWarning("[诗词数据] 没在项目里找到可用的 Sprite。\n" +
+                             "请手动把任意一张图拖到 UIStyleSettings 的 Assistant Portrait 字段。");
+            return;
+        }
+
+        settings.assistantPortrait = sprite;
+        EditorUtility.SetDirty(settings);
+        AssetDatabase.SaveAssets();
+        Selection.activeObject = settings;
+
+        Debug.Log($"[诗词数据] 已给 AI 助手设置形象：{sprite.name}" +
+                  $"（来自 {AssetDatabase.GetAssetPath(sprite)}）");
+    }
+
+    /// <summary>
+    /// 给 AI 助手载入序列帧，让画像真正动起来。
+    ///
+    /// Warrior_Red.png 是 6 列 × 8 行、每帧 192×192 的精灵表：
+    ///   · 每行左侧 3 帧 = 站立/行走循环
+    ///   · 每行右侧 3 帧 = 挥剑攻击（带刀光）
+    ///   · 不同行是不同朝向
+    /// 这里取第 1 行的前 3 帧作待机循环；朝向由 faceLeft 镜像解决。
+    /// </summary>
+    [MenuItem("Tools/诗词数据/7. 给 AI 助手载入序列帧（让它动起来）", false, 24)]
+    public static void LoadAssistantFrames()
+    {
+        var settings = AssetDatabase.LoadAssetAtPath<UIStyleSettings>(UISettingsPath);
+
+        if (settings == null)
+        {
+            Debug.LogWarning($"[诗词数据] 还没有 {UISettingsPath}，请先执行「0. 创建 UI 设置资源」。");
+            return;
+        }
+
+        if (settings.assistantPortrait == null)
+        {
+            Debug.LogWarning("[诗词数据] 还没设置助手形象，请先执行「6. 给 AI 助手挑一张形象图」。");
+            return;
+        }
+
+        string path = AssetDatabase.GetAssetPath(settings.assistantPortrait);
+        var all = new System.Collections.Generic.List<Sprite>();
+
+        foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(path))
+        {
+            if (asset is Sprite sprite)
+                all.Add(sprite);
+        }
+
+        if (all.Count <= 1)
+        {
+            Debug.LogWarning($"[诗词数据] {path} 只有 1 张精灵（不是精灵表），做不了序列帧动画。");
+            return;
+        }
+
+        // 按名字末尾编号排序，保证播放顺序正确
+        all.Sort((a, b) => ExtractTrailingNumber(a.name).CompareTo(ExtractTrailingNumber(b.name)));
+
+        int count = Mathf.Min(3, all.Count);
+        var picked = new Sprite[count];
+
+        for (int i = 0; i < count; i++)
+            picked[i] = all[i];
+
+        settings.assistantFrames = picked;
+        EditorUtility.SetDirty(settings);
+        AssetDatabase.SaveAssets();
+        Selection.activeObject = settings;
+
+        string names = string.Join("、", System.Array.ConvertAll(picked, s => s.name));
+        Debug.Log($"[诗词数据] 已载入助手序列帧 {count} 帧：{names}（来自 {path}）\n" +
+                  "若想换一组动作，直接在 UIStyleSettings 的 Assistant Frames 里替换成别的帧即可。");
+    }
+
+    /// <summary>取名字末尾的编号，用于给精灵表帧排序（如 Warrior_Red_12 → 12）。</summary>
+    private static int ExtractTrailingNumber(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return 0;
+
+        int end = name.Length - 1;
+
+        while (end >= 0 && !char.IsDigit(name[end]))
+            end--;
+
+        if (end < 0)
+            return 0;
+
+        int start = end;
+
+        while (start >= 0 && char.IsDigit(name[start]))
+            start--;
+
+        int value;
+
+        return int.TryParse(name.Substring(start + 1, end - start), out value) ? value : 0;
     }
 
     [MenuItem("Tools/诗词数据/1. 填充资源 ID", false, 10)]

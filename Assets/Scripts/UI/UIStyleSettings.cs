@@ -49,6 +49,27 @@ public class UIStyleSettings : ScriptableObject
     [Tooltip("右下角助手形象。随便一张 Sprite 都行；留空则显示成一块色板（功能不受影响）。")]
     public Sprite assistantPortrait;
 
+    [Tooltip("助手画像外框大小。对话系统的 NPC 头像是 450×450。")]
+    public Vector2 assistantPortraitSize = new Vector2(450f, 450f);
+
+    [Tooltip("框内角色的放大倍数。\n" +
+             "1 = 整个人都塞进框里（很小）；\n" +
+             "2 = 只露头和上半身（同对话系统效果）；\n" +
+             "2.5-3 = 只露头部特写。")]
+    public float assistantPortraitScale = 2f;
+
+    [Tooltip("框内角色位置微调（像素）。\n" +
+             "x 正数=右移；y 负数=角色下移（头顶留白变多）。")]
+    public Vector2 assistantPortraitOffset = Vector2.zero;
+
+    [Tooltip("助手的序列帧（可选）。填了就会循环播放，让画像真正动起来。\n" +
+             "建议只放一组同方向的循环帧（比如某一行左侧的 3 帧待机）。\n" +
+             "留空则只显示静态图。")]
+    public Sprite[] assistantFrames;
+
+    [Tooltip("序列帧每秒播放多少帧。")]
+    public float assistantFrameRate = 6f;
+
     [Tooltip("助手接口地址。默认直连 DeepSeek 官方 API。\n" +
              "百炼：https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions")]
     public string assistantApiUrl = "https://api.deepseek.com/chat/completions";

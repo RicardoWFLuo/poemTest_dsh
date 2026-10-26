@@ -174,7 +174,13 @@ public enum TextApiMode
     Native,
 
     /// <summary>OpenAI 兼容模式，新模型（qwen3.x）走这里。</summary>
-    Compatible
+    Compatible,
+
+    /// <summary>
+    /// DeepSeek 官方 api.deepseek.com。
+    /// 使用 DeepSeek 平台的 Key（与百炼的 Key 不通用），也是助手正在用的那条通道。
+    /// </summary>
+    DeepSeek
 }
 
 public class PoemManager : MonoBehaviour
@@ -220,6 +226,9 @@ public class PoemManager : MonoBehaviour
 
     [Tooltip("原生 text-generation 地址。")]
     public string nativeTextApiUrl = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation";
+
+    [Tooltip("DeepSeek 官方接口地址（Text Api Mode 选 DeepSeek 时使用，用的是 deepseekKey）。")]
+    public string deepSeekTextApiUrl = "https://api.deepseek.com/chat/completions";
 
     [Tooltip("文本回复的最大 token 数。释义约 200 字，1024 足够，也顺便控制成本。")]
     public int textMaxTokens = 1024;
@@ -576,11 +585,25 @@ public class PoemManager : MonoBehaviour
         explainRateLimited = false;
         explainUrlError = false;
 
-        string apiKey = ResolveTextKey();
+        // 按通道决定用哪个平台的 Key：DeepSeek 官方与百炼的 Key 不通用，混用只会 401。
+        string apiKey;
+        string keyHint;
+
+        if (textApiMode == TextApiMode.DeepSeek)
+        {
+            apiKey = ApiKeyConfig.DeepSeekKey;
+            keyHint = "DeepSeek 官方 Key（api_keys.json 的 deepseekKey）";
+        }
+        else
+        {
+            apiKey = ResolveTextKey();
+            keyHint = "百炼 Key（api_keys.json 的 qwenTextKey）";
+        }
+
         if (WarnIfMissingKey(apiKey, "文本生成 API Key"))
         {
             if (!TryShowBuiltinExplanation(poemSO))
-                poemExplainText.text = "尚未配置 AI 密钥，且这首诗还没有配置内置释义。";
+                poemExplainText.text = $"尚未配置 {keyHint}，且这首诗还没有配置内置释义。";
 
             isTextGenerating = false;
             textRoutine = null;
@@ -589,19 +612,27 @@ public class PoemManager : MonoBehaviour
 
         string prompt = BuildExplainPrompt(poemSO);
 
-        if (textApiMode == TextApiMode.Native)
+        if (textApiMode == TextApiMode.DeepSeek)
+        {
+            // DeepSeek 官方：请求体与 OpenAI 兼容格式一致
+            yield return StartCoroutine(
+                RequestExplanationCompatible(poemSO, prompt, apiKey, textModel, deepSeekTextApiUrl));
+        }
+        else if (textApiMode == TextApiMode.Native)
         {
             yield return StartCoroutine(RequestExplanationNative(poemSO, prompt, apiKey, textModel));
 
             if (!explainRequestSucceeded && enableTextFallback)
             {
                 Debug.LogWarning("[PoemManager] 原生接口未成功，改用兼容模式再试一次……");
-                yield return StartCoroutine(RequestExplanationCompatible(poemSO, prompt, apiKey, fallbackTextModel));
+                yield return StartCoroutine(
+                    RequestExplanationCompatible(poemSO, prompt, apiKey, fallbackTextModel, compatibleTextApiUrl));
             }
         }
         else
         {
-            yield return StartCoroutine(RequestExplanationCompatible(poemSO, prompt, apiKey, textModel));
+            yield return StartCoroutine(
+                RequestExplanationCompatible(poemSO, prompt, apiKey, textModel, compatibleTextApiUrl));
 
             if (!explainRequestSucceeded && enableTextFallback)
             {
@@ -612,7 +643,8 @@ public class PoemManager : MonoBehaviour
 
         // 模型被接口拒绝（url error）时，用「已知可用」的模型再试一次。
         // 这类错误返回很快（400），不会让玩家干等，属于低成本自愈。
-        if (!explainRequestSucceeded && explainUrlError &&
+        // DeepSeek 通道不走这条路径（它的接口地址不同）。
+        if (!explainRequestSucceeded && explainUrlError && textApiMode != TextApiMode.DeepSeek &&
             !string.IsNullOrEmpty(knownGoodTextModel) && knownGoodTextModel != textModel)
         {
             Debug.LogWarning($"[PoemManager] 模型「{textModel}」不被该接口接受，改用「{knownGoodTextModel}」再试一次……");
@@ -655,8 +687,8 @@ public class PoemManager : MonoBehaviour
             {poemSO.promptText}";
     }
 
-    /// <summary>通道：OpenAI 兼容模式。</summary>
-    private IEnumerator RequestExplanationCompatible(PoemSO poemSO, string prompt, string apiKey, string model)
+    /// <summary>通道：OpenAI 兼容格式（百炼兼容模式 / DeepSeek 官方共用同一套请求体）。</summary>
+    private IEnumerator RequestExplanationCompatible(PoemSO poemSO, string prompt, string apiKey, string model, string url)
     {
         CompatibleChatRequest requestData = new CompatibleChatRequest();
         requestData.model = model;
@@ -669,7 +701,7 @@ public class PoemManager : MonoBehaviour
         string json = JsonUtility.ToJson(requestData);
         byte[] data = System.Text.Encoding.UTF8.GetBytes(json);
 
-        using (UnityWebRequest req = new UnityWebRequest(compatibleTextApiUrl, "POST"))
+        using (UnityWebRequest req = new UnityWebRequest(url, "POST"))
         {
             req.uploadHandler = new UploadHandlerRaw(data);
             req.downloadHandler = new DownloadHandlerBuffer();
@@ -685,7 +717,7 @@ public class PoemManager : MonoBehaviour
             }
             else
             {
-                ReportTextRequestFailure("兼容模式", model, compatibleTextApiUrl, req);
+                ReportTextRequestFailure("兼容模式", model, url, req);
             }
         }
     }

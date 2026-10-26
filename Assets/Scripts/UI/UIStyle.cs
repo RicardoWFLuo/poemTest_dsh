@@ -60,5 +60,19 @@ public static class UIStyle
     {
         loadAttempted = false;
         settings = null;
+        warnedAboutFont = false;
+    }
+
+    /// <summary>
+    /// 每次进入 Play 都清掉缓存。
+    ///
+    /// 为什么必须这样做：Unity 若关闭了「域重载（Domain Reload）」，
+    /// 静态字段会跨 Play 会话保留 —— 上一局读到的 settings 实例（可能还是空的）
+    /// 会一直被复用，导致你在编辑器里改了 UIStyleSettings 却完全看不到效果。
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetOnPlay()
+    {
+        Invalidate();
     }
 }

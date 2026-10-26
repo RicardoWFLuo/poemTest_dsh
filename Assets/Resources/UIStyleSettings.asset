@@ -24,3 +24,17 @@ MonoBehaviour:
   menuButtonSize: {x: 200, y: 88}
   menuButtonMargin: {x: 28, y: 28}
   menuButtonCorner: 0
+  assistantPortrait: {fileID: -1596506835, guid: 6e6351d3bbccb124ead00da97d5f9e35, type: 3}
+  assistantPortraitSize: {x: 280, y: 280}
+  assistantPortraitScale: 2
+  assistantPortraitOffset: {x: 1, y: 80}
+  assistantFrames:
+  - {fileID: -1596506835, guid: 6e6351d3bbccb124ead00da97d5f9e35, type: 3}
+  - {fileID: 958395198, guid: 6e6351d3bbccb124ead00da97d5f9e35, type: 3}
+  - {fileID: -1181453132, guid: 6e6351d3bbccb124ead00da97d5f9e35, type: 3}
+  assistantFrameRate: 6
+  assistantApiUrl: https://api.deepseek.com/chat/completions
+  assistantModel: deepseek-chat
+  assistantMaxTokens: 512
+  assistantKeySource: 0
+  assistantApiKeyOverride: 
