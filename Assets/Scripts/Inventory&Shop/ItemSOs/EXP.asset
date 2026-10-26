@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de21c956f5bbe4a409d83ae079d934bf, type: 3}
   m_Name: EXP
   m_EditorClassIdentifier: 
+  id: EXP
   itemName: EXP
   itemDescription: 
   icon: {fileID: 21300000, guid: 757585ffe84e769468b7e41ae450ec7a, type: 3}
   isGold: 0
   isEXP: 1
   stackSize: 0
+  isConsumable: 1
   currentHealth: 0
   maxHealth: 0
   speed: 0

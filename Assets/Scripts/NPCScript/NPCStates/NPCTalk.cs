@@ -73,9 +73,28 @@ public class NPCTalk : MonoBehaviour
     {
         if (markedForRemoval != null)
         {
+            WorldState.MarkDialogueConsumed(markedForRemoval);
             conversations.Remove(markedForRemoval);
             markedForRemoval = null;
             currentConversation = null;
+        }
+    }
+
+    /// <summary>
+    /// 把「已被消耗」的对话从列表里剔除（读档与切场景后调用）。
+    /// 场景重载会把 conversations 还原成场景文件里的初始状态，
+    /// 所以每次进场景都要重新过滤，否则发过的任务会复活、奖励可以重复领。
+    /// </summary>
+    public void RemoveConsumedDialogues()
+    {
+        if (conversations == null)
+            return;
+
+        for (int i = conversations.Count - 1; i >= 0; i--)
+        {
+            var convo = conversations[i];
+            if (convo != null && WorldState.IsDialogueConsumed(convo.Id))
+                conversations.RemoveAt(i);
         }
     }
 
@@ -98,12 +117,16 @@ public class NPCTalk : MonoBehaviour
             currentConversation = convo;
 
             if (convo.removeAfterPlay)
+            {
+                WorldState.MarkDialogueConsumed(convo);
                 conversations.RemoveAt(i);
+            }
 
             if (convo.removeTheseOnPlay != null && convo.removeTheseOnPlay.Count > 0)
             {
                 foreach (var toRemove in convo.removeTheseOnPlay)
                 {
+                    WorldState.MarkDialogueConsumed(toRemove);
                     conversations.Remove(toRemove);
                 }
             }
@@ -151,7 +174,10 @@ public class NPCTalk : MonoBehaviour
                 continue;
 
             if (convo.offerQuestOnEnd == acceptedQuest)
+            {
+                WorldState.MarkDialogueConsumed(convo);
                 conversations.RemoveAt(i);
+            }
         }
     }
 }

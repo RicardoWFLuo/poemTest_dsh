@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115329412f351104387cd170100fd7d1, type: 3}
   m_Name: PoemD 3
   m_EditorClassIdentifier: 
+  id: PoemD_3
   lines:
   - speaker: {fileID: 11400000, guid: b97ca4afff005bd42890dbf4de9bdf66, type: 2}
     text: "\u4F60\u597D\uFF0C\u6211\u662F\u4E3A\u4F60\u8FDB\u884C\u6D4B\u8BD5\u7684NPC\u3002"

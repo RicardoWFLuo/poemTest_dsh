@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18fb121d642831a43a5d616307bedef1, type: 3}
   m_Name: Poet 1
   m_EditorClassIdentifier: 
+  id: Poet_1
   actorName: "\u9A86\u5BBE\u738B"
   portrait: {fileID: -1977733820, guid: ab8ce5aa4a94c124694482f82b7d1338, type: 3}

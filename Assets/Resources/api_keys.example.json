@@ -1,6 +1,6 @@
 {
   "qwenTextKey": "在此填入阿里云百炼(DashScope)的文本生成 API Key，形如 sk-xxxxxxxx",
   "qwenImageKey": "在此填入阿里云百炼(DashScope)的万相文生图 API Key，形如 sk-xxxxxxxx",
-  "baiduApiKey": "vmDfbclVShImE4YvoK0toL7W",
-  "baiduSecretKey": "O30JQ3GsGA8cvvklAdL5JXNXw6QGoCHY"
+  "baiduApiKey": "",
+  "baiduSecretKey": ""
 }

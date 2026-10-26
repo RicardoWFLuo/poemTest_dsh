@@ -70,6 +70,14 @@ public class SkillSlot : MonoBehaviour
         UpdateUI();
     }
 
+    /// <summary>用存档数据恢复等级与解锁状态（读档用）。</summary>
+    public void RestoreState(int level, bool unlocked)
+    {
+        currentLevel = Mathf.Max(0, level);
+        isUnclocked = unlocked;
+        UpdateUI();
+    }
+
     private void UpdateUI()
     {
         if (skillSO == null)

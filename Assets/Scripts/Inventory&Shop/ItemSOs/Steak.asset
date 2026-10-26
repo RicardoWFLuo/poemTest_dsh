@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de21c956f5bbe4a409d83ae079d934bf, type: 3}
   m_Name: Steak
   m_EditorClassIdentifier: 
+  id: Steak
   itemName: "\u8089\u6392"
   itemDescription: "\u8FD9\u662F\u4E00\u5757\u8089\u6392..."
   icon: {fileID: 21300000, guid: c118c752a4300f14cbbbb1a7fbe6ea25, type: 3}
   isGold: 0
   isEXP: 0
   stackSize: 2
+  isConsumable: 1
   currentHealth: 6
   maxHealth: 0
   speed: 2

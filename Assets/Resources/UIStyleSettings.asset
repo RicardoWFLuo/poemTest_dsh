@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959316946d3d68748b9dccbfe655bbc8, type: 3}
+  m_Name: UIStyleSettings
+  m_EditorClassIdentifier: 
+  fontAsset: {fileID: 11400000, guid: 4e08397c2cfdd814a91a997dabd2b06e, type: 2}
+  panelColor: {r: 0.09, g: 0.08, b: 0.12, a: 0.96}
+  buttonColor: {r: 0.22, g: 0.2, b: 0.28, a: 1}
+  buttonHighlightColor: {r: 0.34, g: 0.3, b: 0.44, a: 1}
+  textColor: {r: 0.96, g: 0.94, b: 0.88, a: 1}
+  accentColor: {r: 0.85, g: 0.72, b: 0.42, a: 1}
+  showTitleOnStart: 1
+  autoSaveOnSceneChange: 0
+  autoSaveOnQuit: 0

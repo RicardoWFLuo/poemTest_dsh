@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18fb121d642831a43a5d616307bedef1, type: 3}
   m_Name: PurpleBob
   m_EditorClassIdentifier: 
+  id: PurpleBob
   actorName: "\u7D2B\u8272NPC"
   portrait: {fileID: 1932943648, guid: 05e13fd4657e4554981760528999d4ea, type: 3}

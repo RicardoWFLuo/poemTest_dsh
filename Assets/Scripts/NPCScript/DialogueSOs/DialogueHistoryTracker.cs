@@ -25,4 +25,25 @@ public class DialogueHistoryTracker : MonoBehaviour
 
         return spokenNPCs.Contains(actorSO);
     }
+
+    /// <summary>已交互过的角色（存档用）。</summary>
+    public IReadOnlyCollection<ActorSO> GetSpokenActors()
+    {
+        return spokenNPCs;
+    }
+
+    /// <summary>用存档数据整体替换（读档用）。</summary>
+    public void Restore(IEnumerable<ActorSO> actors)
+    {
+        spokenNPCs.Clear();
+
+        if (actors == null)
+            return;
+
+        foreach (var actor in actors)
+        {
+            if (actor != null)
+                spokenNPCs.Add(actor);
+        }
+    }
 }

@@ -12,13 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115329412f351104387cd170100fd7d1, type: 3}
   m_Name: YellowVisiteHill
   m_EditorClassIdentifier: 
+  id: YellowVisiteHill
   lines:
   - speaker: {fileID: 11400000, guid: 317e5ff2da61e874bbc815cf454d9c1f, type: 2}
     text: "\u6211\u542C\u8BF4\u4F60\u722C\u4E0A\u4E86\u90A3\u5EA7\u5C71\uFF0C\u771F\u5389\u5BB3\uFF01"
+    usePoemContent: 0
+    poemLineIndices: 
   options: []
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
   requiredNPCs: []
   requireLocations:
   - {fileID: 11400000, guid: cfb9267da62bdb34dae336d319fbf3ae, type: 2}
   requireItems: []
   removeAfterPlay: 1
   removeTheseOnPlay: []
+  isQuestion: 0
+  questionText: 
+  questionChoices:
+  - 
+  - 
+  - 
+  - 
+  correctChoiceIndex: 0
+  rewardItem: {fileID: 0}
+  rewardQuantity: 1
+  correctResultLineIndex: -1
+  wrongResultLineIndex: -1

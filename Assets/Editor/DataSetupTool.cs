@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ public static class DataSetupTool
 {
     private const string DatabaseFolder = "Assets/Resources";
     private const string DatabasePath = DatabaseFolder + "/GameDatabase.asset";
+    private const string UISettingsPath = DatabaseFolder + "/UIStyleSettings.asset";
     private const string IdField = "id";
 
     // ---------------------------------------------------------------- 菜单入口
@@ -29,8 +31,83 @@ public static class DataSetupTool
     {
         int filled = FillAllIds();
         BuildDatabase();
+        CreateUIStyleSettings();
 
         Debug.Log($"[诗词数据] 初始化完成：本次新填 {filled} 个 ID。若有重复或缺失，请查看上方警告。");
+    }
+
+    /// <summary>
+    /// 创建 UI 样式资源，并自动挑选项目里的中文字体。
+    /// 代码生成的界面必须靠它拿到带中文字形的 TMP 字体，否则中文会显示成方块。
+    /// </summary>
+    [MenuItem("Tools/诗词数据/0. 创建 UI 设置资源（中文字体）", false, 5)]
+    public static void CreateUIStyleSettings()
+    {
+        var existing = AssetDatabase.LoadAssetAtPath<UIStyleSettings>(UISettingsPath);
+
+        if (existing != null)
+        {
+            if (existing.fontAsset == null)
+            {
+                existing.fontAsset = FindChineseFont();
+                EditorUtility.SetDirty(existing);
+                AssetDatabase.SaveAssets();
+            }
+
+            Selection.activeObject = existing;
+            Debug.Log($"[诗词数据] UI 设置已存在：{UISettingsPath}" +
+                      (existing.fontAsset != null ? $"（字体：{existing.fontAsset.name}）" : "，但未找到中文字体，请手动指定。"));
+            return;
+        }
+
+        if (!AssetDatabase.IsValidFolder(DatabaseFolder))
+            AssetDatabase.CreateFolder("Assets", "Resources");
+
+        var settings = ScriptableObject.CreateInstance<UIStyleSettings>();
+        settings.fontAsset = FindChineseFont();
+
+        AssetDatabase.CreateAsset(settings, UISettingsPath);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        Selection.activeObject = settings;
+
+        if (settings.fontAsset != null)
+            Debug.Log($"[诗词数据] 已创建 UI 设置：{UISettingsPath}（自动选中字体：{settings.fontAsset.name}）");
+        else
+            Debug.LogWarning($"[诗词数据] 已创建 UI 设置：{UISettingsPath}，但项目里没找到 TMP 字体资源。" +
+                             "请把 Font Asset 手动设为 zpix SDF 或 unifont-17.0，否则界面中文会显示成方块。");
+    }
+
+    /// <summary>在项目里找最像「中文字体」的 TMP 字体资源。</summary>
+    private static TMP_FontAsset FindChineseFont()
+    {
+        var candidates = new List<TMP_FontAsset>();
+
+        foreach (string guid in AssetDatabase.FindAssets("t:TMP_FontAsset", new[] { "Assets" }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            if (string.IsNullOrEmpty(path))
+                continue;
+
+            var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(path);
+            if (font != null)
+                candidates.Add(font);
+        }
+
+        // 先找名字里能看出是中文/像素中文字体的
+        foreach (var font in candidates)
+        {
+            string name = font.name.ToLowerInvariant();
+
+            if (name.Contains("zpix") || name.Contains("unifont") ||
+                name.Contains("chinese") || name.Contains("hans") || name.Contains("sc"))
+            {
+                return font;
+            }
+        }
+
+        return candidates.Count > 0 ? candidates[0] : null;
     }
 
     [MenuItem("Tools/诗词数据/1. 填充资源 ID", false, 10)]

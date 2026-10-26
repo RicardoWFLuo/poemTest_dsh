@@ -25,4 +25,25 @@ public class LocationHistoryTracker : MonoBehaviour
 
         return locationsVisited.Contains(locationSO);
     }
+
+    /// <summary>已到访的地点（存档用）。</summary>
+    public IReadOnlyCollection<LocationSO> GetVisitedLocations()
+    {
+        return locationsVisited;
+    }
+
+    /// <summary>用存档数据整体替换（读档用）。</summary>
+    public void Restore(IEnumerable<LocationSO> locations)
+    {
+        locationsVisited.Clear();
+
+        if (locations == null)
+            return;
+
+        foreach (var location in locations)
+        {
+            if (location != null)
+                locationsVisited.Add(location);
+        }
+    }
 }

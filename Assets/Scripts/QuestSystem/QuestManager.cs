@@ -30,6 +30,43 @@ public class QuestManager : MonoBehaviour
         return new List<QuestSO>(questProgress.Keys);
     }
 
+    /// <summary>已完成的任务（存档用）。</summary>
+    public IReadOnlyList<QuestSO> GetCompletedQuests()
+    {
+        return completedQuests;
+    }
+
+    /// <summary>
+    /// 用存档数据整体恢复任务状态。
+    ///
+    /// 注意：只恢复「哪些任务被接了 / 哪些完成了」，**不单独存目标进度**。
+    /// 因为 UpdateObjectiveProgress 会按背包数量、到访地点、对话历史重新算出来，
+    /// 存一份反而容易和真实状态不一致。
+    /// </summary>
+    public void RestoreState(IEnumerable<QuestSO> accepted, IEnumerable<QuestSO> completed)
+    {
+        questProgress.Clear();
+        completedQuests.Clear();
+
+        if (completed != null)
+        {
+            foreach (var quest in completed)
+            {
+                if (quest != null && !completedQuests.Contains(quest))
+                    completedQuests.Add(quest);
+            }
+        }
+
+        if (accepted != null)
+        {
+            foreach (var quest in accepted)
+            {
+                if (quest != null)
+                    AcceptQuest(quest);
+            }
+        }
+    }
+
     public void AcceptQuest(QuestSO questSO)
     {
         if (questSO == null || questProgress.ContainsKey(questSO))

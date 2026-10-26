@@ -12,9 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115329412f351104387cd170100fd7d1, type: 3}
   m_Name: BlueBobGreeting_FindedBro
   m_EditorClassIdentifier: 
+  id: BlueBobGreeting_FindedBro
   lines:
   - speaker: {fileID: 11400000, guid: 62b0af042061117438e0bd09ed8e54c4, type: 2}
     text: "\u4F60\u89C1\u5230\u4E86\u6211\u7684\u5144\u5F1F\uFF0C\u600E\u4E48\u6837\uFF0C\u6211\u4EEC\u975E\u5E38\u76F8\u50CF\u5427\u3002"
+    usePoemContent: 0
+    poemLineIndices: 
   options: []
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
   requiredNPCs:
   - {fileID: 11400000, guid: b97ca4afff005bd42890dbf4de9bdf66, type: 2}
+  requireLocations: []
+  requireItems: []
+  removeAfterPlay: 0
+  removeTheseOnPlay: []
+  isQuestion: 0
+  questionText: 
+  questionChoices:
+  - 
+  - 
+  - 
+  - 
+  correctChoiceIndex: 0
+  rewardItem: {fileID: 0}
+  rewardQuantity: 1
+  correctResultLineIndex: -1
+  wrongResultLineIndex: -1

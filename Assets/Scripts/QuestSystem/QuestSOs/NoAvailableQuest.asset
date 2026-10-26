@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9908468cc924fdd40b9fa95cb6cfc263, type: 3}
   m_Name: NoAvailableQuest
   m_EditorClassIdentifier: 
+  id: NoAvailableQuest
   questName: "\u65E0\u53EF\u63A5\u53D6\u4EFB\u52A1"
   questDescription: "\u8FD9\u662F\u4E00\u4E2A\u7528\u6765\u6D4B\u8BD5\u7684\u4EFB\u52A1"
   questLevel: 0

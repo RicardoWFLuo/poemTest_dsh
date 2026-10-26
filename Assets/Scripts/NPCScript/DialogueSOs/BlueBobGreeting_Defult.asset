@@ -12,12 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115329412f351104387cd170100fd7d1, type: 3}
   m_Name: BlueBobGreeting_Defult
   m_EditorClassIdentifier: 
+  id: BlueBobGreeting_Defult
   lines:
   - speaker: {fileID: 11400000, guid: 62b0af042061117438e0bd09ed8e54c4, type: 2}
     text: "\u4F60\u597D\uFF0C\u6211\u662F\u84DD\u8272NPC\u3002"
+    usePoemContent: 0
+    poemLineIndices: 
   options: []
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
   requiredNPCs: []
   requireLocations: []
   requireItems: []
   removeAfterPlay: 0
   removeTheseOnPlay: []
+  isQuestion: 0
+  questionText: 
+  questionChoices:
+  - 
+  - 
+  - 
+  - 
+  correctChoiceIndex: 0
+  rewardItem: {fileID: 0}
+  rewardQuantity: 1
+  correctResultLineIndex: -1
+  wrongResultLineIndex: -1

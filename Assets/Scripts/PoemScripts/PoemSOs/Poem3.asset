@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e128683eda8547a4696557cffda10dc8, type: 3}
   m_Name: Poem3
   m_EditorClassIdentifier: 
+  id: Poem3
   poemTitle: "\u6C60\u4E0A"
   poet: "\u767D\u5C45\u6613"
   poemContent: "\u5C0F\u5A03\u6491\u5C0F\u8247\uFF0C\n\u5077\u91C7\u767D\u83B2\u56DE\u3002\n\u4E0D\u89E3\u85CF\u8E2A\u8FF9\uFF0C\n\u6D6E\u840D\u4E00\u9053\u5F00\u3002"
   promptText: "\u8BF7\u4E3A\u513F\u7AE5\u8BE6\u7EC6\u89E3\u91CA\u8FD9\u9996\u53E4\u8BD7\uFF0C\u8BED\u8A00\u7B80\u5355\u6613\u61C2\uFF0C\u6E29\u67D4\u53EF\u7231\u3002"
-  promptImage: pond, little child in a small boat picking white lotus, lotus leaves, cartoon children's illustration, bright summer colors, 1024x576
+  promptImage: pond, little child in a small boat picking white lotus, lotus leaves,
+    cartoon children's illustration, bright summer colors, 1024x576

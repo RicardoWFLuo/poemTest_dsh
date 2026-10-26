@@ -156,12 +156,16 @@ public class PoemTalk : MonoBehaviour
             }
 
             if (convo.removeAfterPlay)
+            {
+                WorldState.MarkDialogueConsumed(convo);
                 conversations.RemoveAt(i);
+            }
 
             if (convo.removeTheseOnPlay != null && convo.removeTheseOnPlay.Count > 0)
             {
                 foreach (var toRemove in convo.removeTheseOnPlay)
                 {
+                    WorldState.MarkDialogueConsumed(toRemove);
                     conversations.Remove(toRemove);
                 }
             }
@@ -181,6 +185,25 @@ public class PoemTalk : MonoBehaviour
                 continue;
 
             if (convo.offerQuestOnEnd == acceptedQuest)
+            {
+                WorldState.MarkDialogueConsumed(convo);
+                conversations.RemoveAt(i);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 把「已被消耗」的对话从列表里剔除（读档与切场景后调用）。
+    /// </summary>
+    public void RemoveConsumedDialogues()
+    {
+        if (conversations == null)
+            return;
+
+        for (int i = conversations.Count - 1; i >= 0; i--)
+        {
+            var convo = conversations[i];
+            if (convo != null && WorldState.IsDialogueConsumed(convo.Id))
                 conversations.RemoveAt(i);
         }
     }

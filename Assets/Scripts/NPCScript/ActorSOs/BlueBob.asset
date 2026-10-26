@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18fb121d642831a43a5d616307bedef1, type: 3}
   m_Name: BlueBob
   m_EditorClassIdentifier: 
+  id: BlueBob
   actorName: "\u84DD\u8272NPC"
   portrait: {fileID: -1167213600, guid: c01aecf05530f3c44b9fb108492aa80e, type: 3}

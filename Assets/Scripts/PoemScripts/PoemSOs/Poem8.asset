@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e128683eda8547a4696557cffda10dc8, type: 3}
   m_Name: Poem8
   m_EditorClassIdentifier: 
+  id: Poem8
   poemTitle: "\u767B\u9E73\u96C0\u697C"
   poet: "\u738B\u4E4B\u6DA3"
   poemContent: "\u767D\u65E5\u4F9D\u5C71\u5C3D\uFF0C\n\u9EC4\u6CB3\u5165\u6D77\u6D41\u3002\n\u6B32\u7A77\u5343\u91CC\u76EE\uFF0C\n\u66F4\u4E0A\u4E00\u5C42\u697C\u3002"

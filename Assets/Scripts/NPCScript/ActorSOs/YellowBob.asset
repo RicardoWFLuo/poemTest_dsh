@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18fb121d642831a43a5d616307bedef1, type: 3}
   m_Name: YellowBob
   m_EditorClassIdentifier: 
+  id: YellowBob
   actorName: "\u9EC4\u8272NPC"
   portrait: {fileID: -1836186111, guid: d4e9aeacb199a0c44ac3ac53924268fa, type: 3}

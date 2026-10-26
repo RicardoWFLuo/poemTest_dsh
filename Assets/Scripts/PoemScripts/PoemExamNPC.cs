@@ -30,6 +30,60 @@ public class PoemExamNPC : MonoBehaviour
     private static System.Collections.Generic.Dictionary<PoemSO, bool> passedExams = new();
 
 
+    // ---------------------------------------------------------------- 存档支持
+
+    /// <summary>已通过考试的诗（返回 PoemSO 的 ID，供存档使用）。</summary>
+    public static System.Collections.Generic.List<string> GetPassedPoemIds()
+    {
+        var ids = new System.Collections.Generic.List<string>();
+
+        foreach (var pair in passedExams)
+        {
+            if (pair.Key == null || !pair.Value)
+                continue;
+
+            string id = pair.Key.Id;
+            if (!string.IsNullOrEmpty(id))
+                ids.Add(id);
+        }
+
+        return ids;
+    }
+
+    /// <summary>用存档数据整体替换考试通过记录（读档用）。</summary>
+    public static void RestorePassedPoems(System.Collections.Generic.IEnumerable<string> poemIds)
+    {
+        passedExams.Clear();
+
+        if (poemIds == null)
+            return;
+
+        foreach (string id in poemIds)
+        {
+            if (ScriptableObjectIndex.TryGet(id, out PoemSO poem))
+            {
+                passedExams[poem] = true;
+            }
+            else
+            {
+                Debug.LogWarning($"[PoemExamNPC] 找不到诗词「{id}」，该考试记录未恢复。");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 重新从静态记录同步「是否已通过」。
+    /// 读档时通过记录是后写入的，而实例的 hasPassed 在 Start 时就读过了，
+    /// 所以恢复记录之后必须让所有考官重新同步一次。
+    /// </summary>
+    public void RefreshPassedState()
+    {
+        hasPassed = examPoem != null
+                    && passedExams.TryGetValue(examPoem, out bool value)
+                    && value;
+    }
+
+
     void Start()
     {
         if (examCanvas != null)
