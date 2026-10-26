@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e128683eda8547a4696557cffda10dc8, type: 3}
+  m_Name: Poem6
+  m_EditorClassIdentifier: 
+  poemTitle: "\u60AF\u519C\uFF08\u5176\u4E8C\uFF09"
+  poet: "\u674E\u7EC5"
+  poemContent: "\u9504\u79BE\u65E5\u5F53\u5348\uFF0C\n\u6C57\u6EF4\u79BE\u4E0B\u571F\u3002\n\u8C01\u77E5\u76D8\u4E2D\u9910\uFF0C\n\u7C92\u7C92\u7686\u8F9B\u82E6\u3002"
+  promptText: "\u8BF7\u4E3A\u513F\u7AE5\u8BE6\u7EC6\u89E3\u91CA\u8FD9\u9996\u53E4\u8BD7\uFF0C\u8BED\u8A00\u7B80\u5355\u6613\u61C2\uFF0C\u6E29\u67D4\u53EF\u7231\u3002"
+  promptImage: farmer working, sun, rice field, educational cartoon, 1024x576

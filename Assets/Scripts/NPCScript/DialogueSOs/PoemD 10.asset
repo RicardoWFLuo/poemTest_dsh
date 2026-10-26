@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115329412f351104387cd170100fd7d1, type: 3}
+  m_Name: PoemD 10
+  m_EditorClassIdentifier: 
+  lines:
+  - speaker: {fileID: 11400000, guid: b97ca4afff005bd42890dbf4de9bdf66, type: 2}
+    text: "\u4F60\u597D\uFF0C\u6211\u662F\u4E3A\u4F60\u8FDB\u884C\u6D4B\u8BD5\u7684NPC\u3002"
+    usePoemContent: 0
+    poemLineIndices: 
+  - speaker: {fileID: 11400000, guid: b97ca4afff005bd42890dbf4de9bdf66, type: 2}
+    text: "\u63A5\u4E0B\u6765\u6211\u4F1A\u63D0\u51FA\u4E00\u4E2A\u95EE\u9898\uFF0C\u56DE\u7B54\u6B63\u786E\u7684\u8BDD\u4F60\u4F1A\u83B7\u5F97\u4E00\u6839\u9AA8\u5934\u3002"
+    usePoemContent: 0
+    poemLineIndices: 
+  - speaker: {fileID: 11400000, guid: b97ca4afff005bd42890dbf4de9bdf66, type: 2}
+    text: "\u5F53\u4F60\u62E5\u670910\u6839\u9AA8\u5934\uFF0C\u53EF\u4EE5\u53BB\u4EFB\u52A1\u677F\u9886\u53D6\u5956\u52B1\u3002"
+    usePoemContent: 0
+    poemLineIndices: 
+  - speaker: {fileID: 11400000, guid: b97ca4afff005bd42890dbf4de9bdf66, type: 2}
+    text: "\u606D\u559C\u4F60\u7B54\u5BF9\u4E86\uFF0C\u8FD9\u662F\u7ED9\u4F60\u7684\u5956\u52B1\u3002"
+    usePoemContent: 0
+    poemLineIndices: 
+  - speaker: {fileID: 11400000, guid: b97ca4afff005bd42890dbf4de9bdf66, type: 2}
+    text: "\u5F88\u9057\u61BE\uFF0C\u4F60\u7B54\u9519\u4E86\uFF0C\u4F60\u53EF\u4EE5\u518D\u6B21\u5C1D\u8BD5\u3002"
+    usePoemContent: 0
+    poemLineIndices: 
+  options: []
+  offerQuestOnEnd: {fileID: 0}
+  requiredCompletedQuests: []
+  turnInQuestOnEnd: {fileID: 0}
+  requiredNPCs: []
+  requireLocations: []
+  requireItems: []
+  removeAfterPlay: 0
+  removeTheseOnPlay: []
+  isQuestion: 1
+  questionText: "\u300A\u5C0F\u513F\u5782\u9493\u300B\u8BD7\u4E2D\u7684\u5C0F\u5B69\u5B50\u5728\u505A\u4EC0\u4E48\uFF1F"
+  questionChoices:
+  - "\u653E\u98CE\u7B5D"
+  - "\u91C7\u91CE\u82B1"
+  - "\u9493\u9C7C"
+  - "\u6349\u866B\u5B50"
+  correctChoiceIndex: 2
+  rewardItem: {fileID: 11400000, guid: 170909bb14c134749bc5cd6cac0fdd48, type: 2}
+  rewardQuantity: 1
+  correctResultLineIndex: 3
+  wrongResultLineIndex: 4

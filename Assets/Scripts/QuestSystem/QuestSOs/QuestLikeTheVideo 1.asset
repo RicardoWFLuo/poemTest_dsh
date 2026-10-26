@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9908468cc924fdd40b9fa95cb6cfc263, type: 3}
+  m_Name: QuestLikeTheVideo 1
+  m_EditorClassIdentifier: 
+  questName: "\u65B0\u624B\u4EFB\u52A1(\u4E8C)"
+  questDescription: "\u8FD9\u662F\u7B2C\u4E8C\u4E2A\u65B0\u624B\u4EFB\u52A1\uFF0C\u4F60\u9700\u8981\u5B8C\u6210\u4E00\u4E9B\u57FA\u7840\u64CD\u4F5C\u4EE5\u719F\u6089\u6E38\u620F\u3002"
+  questLevel: 1
+  objectives:
+  - description: "\u6536\u96C6\u4E24\u4E2A\u8089\u6392"
+    targrt: {fileID: 11400000, guid: cf7cb86ab33147b4a971f129e097ef43, type: 2}
+    requiredAmount: 2
+  rewards:
+  - itemSO: {fileID: 11400000, guid: 6580c9b2e32d50c43a4dfb23e7f29a9a, type: 2}
+    quantity: 10
+  - itemSO: {fileID: 11400000, guid: 7255643e17e0d5145a7d79f237cc482f, type: 2}
+    quantity: 10
