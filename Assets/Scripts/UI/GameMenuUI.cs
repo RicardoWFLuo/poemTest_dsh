@@ -203,14 +203,50 @@ public class GameMenuUI : MonoBehaviour
 
     private void BuildHud()
     {
-        hudRoot = UIFactory.CreateFullScreen("HudRoot", canvas.transform).gameObject;
+        RectTransform hudRect = UIFactory.CreateFullScreen("HudRoot", canvas.transform);
+
+        // 手机上让整层 HUD 落在安全区内，按钮就不会被刘海/圆角挡住
+        hudRect.gameObject.AddComponent<SafeAreaFitter>();
+        hudRoot = hudRect.gameObject;
+
+        UIStyleSettings settings = UIStyle.Settings;
+        Vector2 buttonSize = settings != null ? settings.menuButtonSize : new Vector2(200f, 88f);
+        Vector2 margin = settings != null ? settings.menuButtonMargin : new Vector2(28f, 28f);
+        MenuButtonCorner corner = settings != null ? settings.menuButtonCorner : MenuButtonCorner.TopRight;
+
+        Vector2 anchor;
+        Vector2 pivot;
+        Vector2 position;
+
+        switch (corner)
+        {
+            case MenuButtonCorner.TopLeft:
+                anchor = new Vector2(0f, 1f); pivot = new Vector2(0f, 1f); position = new Vector2(margin.x, -margin.y);
+                break;
+
+            case MenuButtonCorner.BottomRight:
+                anchor = new Vector2(1f, 0f); pivot = new Vector2(1f, 0f); position = new Vector2(-margin.x, margin.y);
+                break;
+
+            case MenuButtonCorner.BottomLeft:
+                anchor = new Vector2(0f, 0f); pivot = new Vector2(0f, 0f); position = new Vector2(margin.x, margin.y);
+                break;
+
+            case MenuButtonCorner.TopCenter:
+                anchor = new Vector2(0.5f, 1f); pivot = new Vector2(0.5f, 1f); position = new Vector2(0f, -margin.y);
+                break;
+
+            default:
+                anchor = new Vector2(1f, 1f); pivot = new Vector2(1f, 1f); position = new Vector2(-margin.x, -margin.y);
+                break;
+        }
 
         var buttonRect = UIFactory.NewRect("MenuButton", hudRoot.transform);
-        buttonRect.anchorMin = new Vector2(1f, 1f);
-        buttonRect.anchorMax = new Vector2(1f, 1f);
-        buttonRect.pivot = new Vector2(1f, 1f);
-        buttonRect.sizeDelta = new Vector2(176f, 72f);
-        buttonRect.anchoredPosition = new Vector2(-24f, -24f);
+        buttonRect.anchorMin = anchor;
+        buttonRect.anchorMax = anchor;
+        buttonRect.pivot = pivot;
+        buttonRect.sizeDelta = buttonSize;
+        buttonRect.anchoredPosition = position;
 
         // 直接用 CreateButton 的话锚点会被设成居中，这里手搭一个同款按钮
         var image = buttonRect.gameObject.AddComponent<Image>();
@@ -233,7 +269,7 @@ public class GameMenuUI : MonoBehaviour
         var label = labelRect.gameObject.AddComponent<TextMeshProUGUI>();
         label.font = UIStyle.Font;
         label.text = "菜单";
-        label.fontSize = 30f;
+        label.fontSize = 36f;
         label.color = UIStyle.TextColor;
         label.alignment = TextAlignmentOptions.Center;
         label.raycastTarget = false;

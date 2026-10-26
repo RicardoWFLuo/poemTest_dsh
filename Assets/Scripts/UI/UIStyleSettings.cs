@@ -34,4 +34,24 @@ public class UIStyleSettings : ScriptableObject
 
     [Tooltip("退出游戏 / 切后台时自动存档。")]
     public bool autoSaveOnQuit = false;
+
+    [Header("移动端：右上角菜单按钮")]
+    [Tooltip("按钮尺寸（参考分辨率 1920×1080 下的像素）。手机上建议不小于 200×88。")]
+    public Vector2 menuButtonSize = new Vector2(200f, 88f);
+
+    [Tooltip("按钮距离屏幕边缘的距离。会自动避开刘海与安全区。")]
+    public Vector2 menuButtonMargin = new Vector2(28f, 28f);
+
+    [Tooltip("按钮放在哪个角。如果和现有移动端按键重叠，换一个角即可。")]
+    public MenuButtonCorner menuButtonCorner = MenuButtonCorner.TopRight;
+}
+
+/// <summary>菜单按钮可以放的几个位置。</summary>
+public enum MenuButtonCorner
+{
+    TopRight,
+    TopLeft,
+    BottomRight,
+    BottomLeft,
+    TopCenter
 }
