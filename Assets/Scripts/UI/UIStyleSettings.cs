@@ -44,6 +44,43 @@ public class UIStyleSettings : ScriptableObject
 
     [Tooltip("按钮放在哪个角。如果和现有移动端按键重叠，换一个角即可。")]
     public MenuButtonCorner menuButtonCorner = MenuButtonCorner.TopRight;
+
+    [Header("AI 助手")]
+    [Tooltip("右下角助手形象。随便一张 Sprite 都行；留空则显示成一块色板（功能不受影响）。")]
+    public Sprite assistantPortrait;
+
+    [Tooltip("助手接口地址。默认直连 DeepSeek 官方 API。\n" +
+             "百炼：https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions")]
+    public string assistantApiUrl = "https://api.deepseek.com/chat/completions";
+
+    [Tooltip("助手模型。DeepSeek 官方：deepseek-chat（快、不推理）或 deepseek-reasoner（先推理，更慢更贵）。\n" +
+             "百炼：deepseek-v4.1-flash-1017 等。")]
+    public string assistantModel = "deepseek-chat";
+
+    [Tooltip("助手单次回复的最大 token。deepseek-chat 不推理，512 足够；\n" +
+             "若改用 deepseek-reasoner 这类思考型模型，要给 2048 以上，否则正文会是空的。")]
+    public int assistantMaxTokens = 512;
+
+    [Tooltip("用哪个 Key 鉴权。DeepSeek 官方与百炼的 Key 不通用。")]
+    public AssistantKeySource assistantKeySource = AssistantKeySource.DeepSeek;
+
+    [Tooltip("仅用于临时测试。\n" +
+             "⚠️ 不要在这里填真实 Key —— 这个资源会随项目提交到 Git！\n" +
+             "请把 Key 填到 Assets/Resources/api_keys.json 的 deepseekKey 字段（该文件已被 .gitignore 忽略）。")]
+    public string assistantApiKeyOverride;
+}
+
+/// <summary>助手使用哪个平台的密钥。</summary>
+public enum AssistantKeySource
+{
+    /// <summary>DeepSeek 官方 api.deepseek.com</summary>
+    DeepSeek,
+
+    /// <summary>阿里云百炼（DashScope）</summary>
+    BailianQwen,
+
+    /// <summary>临时自定义（仅测试用，不要提交真实 Key）</summary>
+    Custom
 }
 
 /// <summary>菜单按钮可以放的几个位置。</summary>

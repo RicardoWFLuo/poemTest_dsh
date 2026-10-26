@@ -24,6 +24,7 @@ public static class ApiKeyConfig
         public string qwenImageKey;
         public string baiduApiKey;
         public string baiduSecretKey;
+        public string deepseekKey;
     }
 
     private const string ResourceName = "api_keys";
@@ -32,6 +33,7 @@ public static class ApiKeyConfig
     private const string EnvQwenImage = "POEMTEST_QWEN_IMAGE_KEY";
     private const string EnvBaiduApi = "POEMTEST_BAIDU_API_KEY";
     private const string EnvBaiduSecret = "POEMTEST_BAIDU_SECRET_KEY";
+    private const string EnvDeepSeek = "POEMTEST_DEEPSEEK_KEY";
 
     private static ApiKeys keys;
     private static bool loadAttempted;
@@ -48,10 +50,17 @@ public static class ApiKeyConfig
     /// <summary>百度语音识别 Secret Key。</summary>
     public static string BaiduSecretKey => Resolve(EnvBaiduSecret, () => Load().baiduSecretKey);
 
+    /// <summary>
+    /// DeepSeek 官方 API 密钥（api.deepseek.com）。
+    /// 注意：它和百炼的 Key 不能混用，两个平台的鉴权是独立的。
+    /// </summary>
+    public static string DeepSeekKey => Resolve(EnvDeepSeek, () => Load().deepseekKey);
+
     /// <summary>是否至少配置了一组密钥，用于启动时给出提示。</summary>
     public static bool HasAnyKey =>
         !string.IsNullOrEmpty(QwenTextKey) ||
-        !string.IsNullOrEmpty(BaiduApiKey);
+        !string.IsNullOrEmpty(BaiduApiKey) ||
+        !string.IsNullOrEmpty(DeepSeekKey);
 
     private static string Resolve(string envName, Func<string> fromFile)
     {

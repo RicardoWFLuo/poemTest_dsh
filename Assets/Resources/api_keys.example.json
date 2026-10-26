@@ -2,5 +2,6 @@
   "qwenTextKey": "在此填入阿里云百炼(DashScope)的文本生成 API Key，形如 sk-xxxxxxxx",
   "qwenImageKey": "在此填入阿里云百炼(DashScope)的万相文生图 API Key，形如 sk-xxxxxxxx",
   "baiduApiKey": "",
-  "baiduSecretKey": ""
+  "baiduSecretKey": "",
+  "deepseekKey": "在此填入 DeepSeek 官方平台的 API Key（api.deepseek.com），形如 sk-xxxxxxxx"
 }

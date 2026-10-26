@@ -47,9 +47,22 @@ public static class DataSetupTool
 
         if (existing != null)
         {
+            bool changed = false;
+
             if (existing.fontAsset == null)
             {
                 existing.fontAsset = FindChineseFont();
+                changed = true;
+            }
+
+            if (existing.assistantPortrait == null)
+            {
+                existing.assistantPortrait = FindAssistantPortrait();
+                changed = true;
+            }
+
+            if (changed)
+            {
                 EditorUtility.SetDirty(existing);
                 AssetDatabase.SaveAssets();
             }
@@ -65,6 +78,7 @@ public static class DataSetupTool
 
         var settings = ScriptableObject.CreateInstance<UIStyleSettings>();
         settings.fontAsset = FindChineseFont();
+        settings.assistantPortrait = FindAssistantPortrait();
 
         AssetDatabase.CreateAsset(settings, UISettingsPath);
         AssetDatabase.SaveAssets();
@@ -108,6 +122,40 @@ public static class DataSetupTool
         }
 
         return candidates.Count > 0 ? candidates[0] : null;
+    }
+
+    /// <summary>找一张现成的精灵图给 AI 助手当形象（随便哪张都行）。</summary>
+    private static Sprite FindAssistantPortrait()
+    {
+        string[] preferredNames = { "Pawn_Red", "Pawn_Purple", "RedPoet", "Poet" };
+
+        foreach (string wanted in preferredNames)
+        {
+            foreach (string guid in AssetDatabase.FindAssets(wanted + " t:Sprite", new[] { "Assets" }))
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+
+                if (string.IsNullOrEmpty(path))
+                    continue;
+
+                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+
+                if (sprite != null)
+                    return sprite;
+            }
+        }
+
+        // 退一步：项目里任意一张精灵图
+        foreach (string guid in AssetDatabase.FindAssets("t:Sprite", new[] { "Assets" }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+
+            if (sprite != null)
+                return sprite;
+        }
+
+        return null;
     }
 
     [MenuItem("Tools/诗词数据/1. 填充资源 ID", false, 10)]
