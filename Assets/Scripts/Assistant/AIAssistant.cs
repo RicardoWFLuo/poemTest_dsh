@@ -210,11 +210,14 @@ public class AIAssistant : MonoBehaviour
 
     private DialogueManager dialogueManager;
     private PoemExamNPC[] examNpcs;
+    private ToggleSkillTree[] skillTreePanels;
+    private StatsUI[] statsPanels;
+    private ShopKeeper[] shopPanels;
     private float nextScanTime;
 
     /// <summary>
-    /// 对话、诗词释义/配图、诗词考试、主菜单开着的时候，助手要收起来，
-    /// 否则会挡住对话文字或考试题目。
+    /// 对话、诗词释义/配图、诗词考试、技能树、属性面板、商店、主菜单，
+    /// 只要有任意一个开着，助手就收起来，免得挡住内容。
     /// </summary>
     private void UpdateVisibility()
     {
@@ -246,8 +249,49 @@ public class AIAssistant : MonoBehaviour
         if (AnyExamOpen())
             return true;
 
+        if (AnyCanvasGroupPanelOpen())
+            return true;
+
         if (GameMenuUI.Instance != null && GameMenuUI.Instance.IsAnyOverlayVisible)
             return true;
+
+        return false;
+    }
+
+    /// <summary>CanvasGroup 的 alpha 大于一半就算"开着"（这些面板靠 alpha 开关，不失活）。</summary>
+    private static bool GroupVisible(CanvasGroup group)
+    {
+        return group != null && group.gameObject.activeInHierarchy && group.alpha > 0.5f;
+    }
+
+    private bool AnyCanvasGroupPanelOpen()
+    {
+        if (skillTreePanels != null)
+        {
+            foreach (var panel in skillTreePanels)
+            {
+                if (panel != null && GroupVisible(panel.skillCanvas))
+                    return true;
+            }
+        }
+
+        if (statsPanels != null)
+        {
+            foreach (var panel in statsPanels)
+            {
+                if (panel != null && GroupVisible(panel.statsCanvas))
+                    return true;
+            }
+        }
+
+        if (shopPanels != null)
+        {
+            foreach (var panel in shopPanels)
+            {
+                if (panel != null && GroupVisible(panel.shopCanvasGroup))
+                    return true;
+            }
+        }
 
         return false;
     }
@@ -278,7 +322,16 @@ public class AIAssistant : MonoBehaviour
             dialogueManager = FindObjectOfType<DialogueManager>();
 
         if (examNpcs == null || examNpcs.Length == 0)
-            examNpcs = FindObjectsOfType<PoemExamNPC>();
+            examNpcs = FindObjectsOfType<PoemExamNPC>(true);
+
+        if (skillTreePanels == null || skillTreePanels.Length == 0)
+            skillTreePanels = FindObjectsOfType<ToggleSkillTree>(true);
+
+        if (statsPanels == null || statsPanels.Length == 0)
+            statsPanels = FindObjectsOfType<StatsUI>(true);
+
+        if (shopPanels == null || shopPanels.Length == 0)
+            shopPanels = FindObjectsOfType<ShopKeeper>(true);
     }
 
     // ---------------------------------------------------------------- UI 搭建

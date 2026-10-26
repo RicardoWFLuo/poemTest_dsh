@@ -6240,10 +6240,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 933ee6064db58a04c91d794864610904, type: 2}
     - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: currentLevel
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
       propertyPath: prerequisiteSkillSlots.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -6408,10 +6404,6 @@ PrefabInstance:
       propertyPath: skillSO
       value: 
       objectReference: {fileID: 11400000, guid: 933ee6064db58a04c91d794864610904, type: 2}
-    - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: currentLevel
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
       propertyPath: prerequisiteSkillSlots.Array.size
       value: 2
@@ -9485,10 +9477,6 @@ PrefabInstance:
       propertyPath: skillSO
       value: 
       objectReference: {fileID: 11400000, guid: 933ee6064db58a04c91d794864610904, type: 2}
-    - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: isUnclocked
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9121435338985274621, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
       propertyPath: m_Interactable
       value: 1
@@ -9662,10 +9650,6 @@ PrefabInstance:
       propertyPath: skillSO
       value: 
       objectReference: {fileID: 11400000, guid: 933ee6064db58a04c91d794864610904, type: 2}
-    - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: isUnclocked
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8555934947624018730, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
       propertyPath: skillSO
       value: 
@@ -9673,10 +9657,6 @@ PrefabInstance:
     - target: {fileID: 8555934947624018730, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
       propertyPath: skillIcon
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555934947624018730, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: isUnclocked
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10202,10 +10182,6 @@ PrefabInstance:
       propertyPath: skillSO
       value: 
       objectReference: {fileID: 11400000, guid: 933ee6064db58a04c91d794864610904, type: 2}
-    - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: currentLevel
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
       propertyPath: prerequisiteSkillSlots.Array.size
       value: 2
@@ -12876,18 +12852,6 @@ PrefabInstance:
       propertyPath: skillSO
       value: 
       objectReference: {fileID: 11400000, guid: 933ee6064db58a04c91d794864610904, type: 2}
-    - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: isUnclocked
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555934947624018730, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: isUnclocked
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8555934947624018730, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: currentLevel
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 9121435338985274621, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
       propertyPath: m_Interactable
       value: 1
@@ -13037,10 +13001,6 @@ PrefabInstance:
       propertyPath: skillSO
       value: 
       objectReference: {fileID: 11400000, guid: 933ee6064db58a04c91d794864610904, type: 2}
-    - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
-      propertyPath: currentLevel
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7435451269009757623, guid: 436fd44fb5cfb584a809043b9ccf87a9, type: 3}
       propertyPath: prerequisiteSkillSlots.Array.size
       value: 1
