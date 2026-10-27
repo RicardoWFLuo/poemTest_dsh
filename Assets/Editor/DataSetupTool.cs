@@ -343,10 +343,34 @@ public static class DataSetupTool
 
         if (overwrite)
         {
+            // 先备份一份到项目根目录的 Backups/，再覆盖。
+            // 放在 Assets 之外，Unity 不会导入，也就不会产生冲突。
+            string backupDir = System.IO.Path.Combine(
+                System.IO.Directory.GetParent(Application.dataPath).FullName, "Backups");
+
+            try
+            {
+                System.IO.Directory.CreateDirectory(backupDir);
+
+                string stamp = System.DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                string backupPath = System.IO.Path.Combine(backupDir, $"GameMenuCanvas_{stamp}.prefab");
+
+                System.IO.File.Copy(
+                    System.IO.Path.Combine(Application.dataPath, "Resources/GameMenuCanvas.prefab"),
+                    backupPath, true);
+
+                Debug.Log($"[菜单] 覆盖前已备份旧预制体：{backupPath}");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[菜单] 备份旧预制体失败：{e.Message}");
+            }
+
             bool ok = EditorUtility.DisplayDialog(
                 "重新生成菜单预制体",
                 "已存在 " + path + "\n\n" +
-                "继续会覆盖它，你在 Unity 里对该预制体做的修改会丢失。\n" +
+                "继续会覆盖它，你在 Unity 里对该预制体做的修改会失效。\n" +
+                "（旧版本已自动备份到项目根目录的 Backups/ 文件夹）\n\n" +
                 "确定要继续吗？",
                 "覆盖", "取消");
 
