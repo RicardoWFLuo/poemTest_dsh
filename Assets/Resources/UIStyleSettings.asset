@@ -24,6 +24,30 @@ MonoBehaviour:
   menuButtonSize: {x: 200, y: 88}
   menuButtonMargin: {x: 28, y: 28}
   menuButtonCorner: 0
+  menuCover: {fileID: 21300000, guid: 20ba4298f37b4dd469f86ea1b09b6660, type: 3}
+  dimCover: 1
+  menuTitleBanner: {fileID: 21300000, guid: 564ec7f983214a149b029c7b3aa344a1, type: 3}
+  menuSlotBanner: {fileID: 21300000, guid: db52542fadc539547a300c2420736f06, type: 3}
+  menuButtonSprite: {fileID: 21300000, guid: 4494261eee3d61049aac388b8a8f810f, type: 3}
+  menuButtonSpriteAlt: {fileID: 21300000, guid: 4494261eee3d61049aac388b8a8f810f, type: 3}
+  menuScreenBanner: {fileID: 21300000, guid: db52542fadc539547a300c2420736f06, type: 3}
+  applyLayoutAtRuntime: 0
+  titlePanelSize: {x: 780, y: 640}
+  titlePanelOffset: {x: 0, y: 0}
+  menuPanelSize: {x: 720, y: 600}
+  menuPanelOffset: {x: 0, y: 0}
+  slotPanelSize: {x: 940, y: 560}
+  slotPanelOffset: {x: 0, y: 0}
+  titleButtonSize: {x: 440, y: 88}
+  titleButtonSpacing: 110
+  menuPanelButtonSize: {x: 460, y: 84}
+  menuPanelButtonSpacing: 100
+  slotButtonSize: {x: 860, y: 76}
+  slotButtonSpacing: 92
+  menuButtonRowSpacing: 8
+  menuTextColor: {r: 0, g: 0, b: 0, a: 1}
+  slotButtonTextColor: {r: 1, g: 1, b: 1, a: 1}
+  slotButtonColor: {r: 0.3, g: 0.3, b: 0.36, a: 1}
   assistantPortrait: {fileID: -1596506835, guid: 6e6351d3bbccb124ead00da97d5f9e35, type: 3}
   assistantPortraitSize: {x: 280, y: 280}
   assistantPortraitScale: 2

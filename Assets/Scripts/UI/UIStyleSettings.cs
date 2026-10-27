@@ -45,6 +45,84 @@ public class UIStyleSettings : ScriptableObject
     [Tooltip("按钮放在哪个角。如果和现有移动端按键重叠，换一个角即可。")]
     public MenuButtonCorner menuButtonCorner = MenuButtonCorner.TopRight;
 
+    [Header("菜单界面贴图")]
+    [Tooltip("开局标题界面的全屏封面（例如 Resources/tt.png）。留空则自动尝试 Resources/tt。")]
+    public Sprite menuCover;
+
+    [Tooltip("封面是否压暗。开启会在封面上盖一层半透明黑，让文字更好读。")]
+    public bool dimCover = true;
+
+    [Tooltip("标题界面背后的横幅（Banner_Vertical）。留空则用纯色面板。")]
+    public Sprite menuTitleBanner;
+
+    [Tooltip("存档界面背后的横幅（Banner_Horizontal）。留空则用纯色面板。")]
+    public Sprite menuSlotBanner;
+
+    [Tooltip("标题界面按钮底图（Button_Blue_3Slides）。留空则用纯色按钮。")]
+    public Sprite menuButtonSprite;
+
+    [Tooltip("另外两个界面（游戏菜单 / 存档列表）的按钮底图。\n" +
+             "留空则沿用标题界面的那张。")]
+    public Sprite menuButtonSpriteAlt;
+
+    [Tooltip("游戏菜单界面（Esc）背后的横幅。留空则用纯色面板。")]
+    public Sprite menuScreenBanner;
+
+    [Header("菜单界面布局（数值可在 Inspector 直接改）")]
+    [Tooltip("是否在运行时用下面的数值强制排版。\n" +
+             "关闭（推荐）= 以预制体 / Hierarchy 里的排版为准，你手动拖的位置才会生效；\n" +
+             "开启 = 每次运行都用这里的数值覆盖。")]
+    public bool applyLayoutAtRuntime = false;
+
+    [Tooltip("标题界面面板尺寸。")]
+    public Vector2 titlePanelSize = new Vector2(780f, 640f);
+
+    [Tooltip("标题界面面板位置（相对屏幕中心）。")]
+    public Vector2 titlePanelOffset = Vector2.zero;
+
+    [Tooltip("游戏菜单面板尺寸。")]
+    public Vector2 menuPanelSize = new Vector2(720f, 600f);
+
+    [Tooltip("游戏菜单面板位置。")]
+    public Vector2 menuPanelOffset = Vector2.zero;
+
+    [Tooltip("存档界面面板尺寸。")]
+    public Vector2 slotPanelSize = new Vector2(940f, 560f);
+
+    [Tooltip("存档界面面板位置。")]
+    public Vector2 slotPanelOffset = Vector2.zero;
+
+    [Tooltip("标题界面按钮尺寸。")]
+    public Vector2 titleButtonSize = new Vector2(440f, 88f);
+
+    [Tooltip("标题界面按钮之间的垂直间距。")]
+    public float titleButtonSpacing = 110f;
+
+    [Tooltip("游戏菜单按钮尺寸。")]
+    public Vector2 menuPanelButtonSize = new Vector2(460f, 84f);
+
+    [Tooltip("游戏菜单按钮之间的垂直间距。")]
+    public float menuPanelButtonSpacing = 100f;
+
+    [Tooltip("存档按钮尺寸。")]
+    public Vector2 slotButtonSize = new Vector2(860f, 76f);
+
+    [Tooltip("存档按钮之间的垂直间距。")]
+    public float slotButtonSpacing = 92f;
+
+    [Tooltip("菜单按钮插入左下角按钮排时的间距。")]
+    public float menuButtonRowSpacing = 8f;
+
+    [Header("菜单界面颜色")]
+    [Tooltip("横幅上的文字颜色（默认黑色）。")]
+    public Color menuTextColor = Color.black;
+
+    [Tooltip("存档按钮的文字颜色（默认白色）。")]
+    public Color slotButtonTextColor = Color.white;
+
+    [Tooltip("存档按钮的底色（保持原来的灰色，不套贴图）。")]
+    public Color slotButtonColor = new Color(0.30f, 0.30f, 0.36f, 1f);
+
     [Header("AI 助手")]
     [Tooltip("右下角助手形象。随便一张 Sprite 都行；留空则显示成一块色板（功能不受影响）。")]
     public Sprite assistantPortrait;

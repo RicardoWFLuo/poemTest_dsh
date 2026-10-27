@@ -324,6 +324,135 @@ public static class DataSetupTool
         return int.TryParse(name.Substring(start + 1, end - start), out value) ? value : 0;
     }
 
+    /// <summary>
+    /// 把菜单界面（标题 / 主菜单 / 存档列表 / 菜单按钮）生成成一个预制体，
+    /// 之后你就能在 Unity 里直接可视化编辑它。
+    ///
+    /// 生成后运行时会优先使用这个预制体（Resources/GameMenuCanvas），
+    /// 而构建代码只会「复用」其中的节点、不会覆盖你的排版。
+    /// </summary>
+    [MenuItem("Tools/诗词数据/8. 生成菜单界面预制体（可在 Unity 中编辑）", false, 25)]
+    public static void CreateMenuPrefab()
+    {
+        if (!AssetDatabase.IsValidFolder("Assets/Resources"))
+            AssetDatabase.CreateFolder("Assets", "Resources");
+
+        const string path = "Assets/Resources/GameMenuCanvas.prefab";
+
+        bool overwrite = AssetDatabase.LoadAssetAtPath<GameObject>(path) != null;
+
+        if (overwrite)
+        {
+            bool ok = EditorUtility.DisplayDialog(
+                "重新生成菜单预制体",
+                "已存在 " + path + "\n\n" +
+                "继续会覆盖它，你在 Unity 里对该预制体做的修改会丢失。\n" +
+                "确定要继续吗？",
+                "覆盖", "取消");
+
+            if (!ok)
+                return;
+        }
+
+        GameObject built = GameMenuUI.BuildForPrefab();
+
+        if (built == null)
+        {
+            Debug.LogError("[菜单] 生成失败：构建代码返回了空对象。");
+            return;
+        }
+
+        GameObject prefab = PrefabUtility.SaveAsPrefabAsset(built, path);
+        Object.DestroyImmediate(built);
+
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        if (prefab != null)
+        {
+            Selection.activeObject = prefab;
+            EditorGUIUtility.PingObject(prefab);
+
+            Debug.Log($"[菜单] 已生成菜单界面预制体：{path}\n" +
+                      "现在可以直接在 Unity 里编辑它的布局、文字与图片；\n" +
+                      "运行时会自动使用这个预制体（找不到才退回代码生成）。");
+        }
+        else
+        {
+            Debug.LogError($"[菜单] 保存预制体失败：{path}");
+        }
+    }
+
+    /// <summary>
+    /// 把项目里现成的横幅/按钮贴图配到 UIStyleSettings 上，省得手动拖。
+    /// 配完执行一次「8. 生成菜单界面预制体」，预制体里就会带上这些图。
+    /// </summary>
+    [MenuItem("Tools/诗词数据/9. 配置菜单界面贴图（横幅 + 按钮）", false, 26)]
+    public static void ConfigureMenuSprites()
+    {
+        var settings = AssetDatabase.LoadAssetAtPath<UIStyleSettings>(UISettingsPath);
+
+        if (settings == null)
+        {
+            Debug.LogWarning($"[诗词数据] 还没有 {UISettingsPath}。\n" +
+                             "请先执行「0. 创建 UI 设置资源（中文字体）」。");
+            return;
+        }
+
+        string bannerVertical = "Assets/Sprites/UI/Banners/Banner_Vertical.png";
+        string bannerHorizontal = "Assets/Sprites/UI/Banners/Banner_Horizontal.png";
+        string buttonBlue = "Assets/Sprites/UI/Buttons/Button_Blue_3Slides.png";
+        string coverPath = "Assets/Resources/tt.png";
+
+        Sprite titleBanner = AssetDatabase.LoadAssetAtPath<Sprite>(bannerVertical);
+        Sprite slotBanner = AssetDatabase.LoadAssetAtPath<Sprite>(bannerHorizontal);
+        Sprite buttonSprite = AssetDatabase.LoadAssetAtPath<Sprite>(buttonBlue);
+        Sprite cover = AssetDatabase.LoadAssetAtPath<Sprite>(coverPath);
+
+        // 封面图 2560 宽，默认最大尺寸 2048 会被压缩；这里保证不被缩
+        if (cover != null && AssetImporter.GetAtPath(coverPath) is TextureImporter importer)
+        {
+            if (importer.maxTextureSize < 2560)
+            {
+                importer.maxTextureSize = 4096;
+                importer.SaveAndReimport();
+            }
+        }
+
+        if (cover != null)
+            settings.menuCover = cover;
+
+        if (titleBanner != null)
+            settings.menuTitleBanner = titleBanner;
+
+        if (slotBanner != null)
+            settings.menuSlotBanner = slotBanner;
+
+        // 游戏菜单界面也用横版横幅
+        if (slotBanner != null)
+            settings.menuScreenBanner = slotBanner;
+
+        if (buttonSprite != null)
+        {
+            settings.menuButtonSprite = buttonSprite;
+
+            // 另外两个界面默认沿用同一张，你也可以在 Inspector 里换成别的
+            if (settings.menuButtonSpriteAlt == null)
+                settings.menuButtonSpriteAlt = buttonSprite;
+        }
+
+        EditorUtility.SetDirty(settings);
+        AssetDatabase.SaveAssets();
+        Selection.activeObject = settings;
+        EditorGUIUtility.PingObject(settings);
+
+        Debug.Log("[诗词数据] 菜单贴图已配置：\n" +
+                  $"  标题横幅   {(titleBanner != null ? "Banner_Vertical" : "（未找到，保持纯色）")}\n" +
+                  $"  存档横幅   {(slotBanner != null ? "Banner_Horizontal" : "（未找到，保持纯色）")}\n" +
+                  $"  按钮底图   {(buttonSprite != null ? "Button_Blue_3Slides" : "（未找到，保持纯色）")}\n" +
+                  "接着执行「8. 生成菜单界面预制体」让贴图进入预制体。");
+    }
+
     [MenuItem("Tools/诗词数据/1. 填充资源 ID", false, 10)]
     public static void FillIdsMenu()
     {

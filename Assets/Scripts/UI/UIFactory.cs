@@ -12,6 +12,25 @@ using UnityEngine.UI;
 /// </summary>
 public static class UIFactory
 {
+    /// <summary>
+    /// 是否在创建/复用节点时套用代码里的排版数值。
+    ///
+    /// 关闭时：只绑定组件与文字，不动尺寸和位置 ——
+    /// 这样你在 Unity 的 Hierarchy / 预制体里手动拖的位置才会生效。
+    /// </summary>
+    public static bool ApplyLayout = true;
+
+    /// <summary>
+    /// 每次进入 Play 都把开关复位成 true。
+    /// 否则上一局运行期把它设成 false 之后，静态字段会残留，
+    /// 导致编辑器工具（生成预制体）在错误的模式下构建、生成出叠在一起的界面。
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetApplyLayoutOnPlay()
+    {
+        ApplyLayout = true;
+    }
+
     private static Sprite whiteSprite;
 
     /// <summary>运行时生成的 1x1 白色贴图，给没有美术资源的纯色面板/按钮用。</summary>
@@ -71,19 +90,56 @@ public static class UIFactory
         scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
         scaler.matchWidthOrHeight = 0.5f;
 
-        Object.DontDestroyOnLoad(host);
+        // DontDestroyOnLoad 只能在运行时调用。
+        // 编辑器工具（例如生成菜单预制体）也会用这个方法，那里必须跳过。
+        if (Application.isPlaying)
+            Object.DontDestroyOnLoad(host);
+
         return canvas;
     }
 
     /// <summary>创建一个铺满父级的 RectTransform。</summary>
+    /// <summary>
+    /// 铺满父级。**同名子物体已存在时直接复用**，不重复创建。
+    ///
+    /// 这一条是全套 UI 能"预制体化"的关键：
+    /// GameMenuUI 的构建代码保持不变，只要运行时先把预制体实例化到画布下，
+    /// 这些 Create* 调用就会复用预制体里的节点，于是你在 Unity 里做的修改才会生效。
+    /// </summary>
     public static RectTransform CreateFullScreen(string name, Transform parent)
     {
-        var rect = NewRect(name, parent);
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
+        var rect = EnsureRect(name, parent);
+
+        if (ApplyLayout)
+        {
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+        }
+
         return rect;
+    }
+
+    /// <summary>有同名的就直接拿来用，没有才新建。</summary>
+    public static RectTransform EnsureRect(string name, Transform parent)
+    {
+        if (parent != null && !string.IsNullOrEmpty(name))
+        {
+            Transform existing = parent.Find(name);
+
+            if (existing is RectTransform found)
+                return found;
+        }
+
+        return NewRect(name, parent);
+    }
+
+    /// <summary>同类型组件已存在就复用，避免"复用预制体时又加一个 Image"这种重复组件。</summary>
+    public static T EnsureComponent<T>(GameObject host) where T : Component
+    {
+        T existing = host.GetComponent<T>();
+        return existing != null ? existing : host.AddComponent<T>();
     }
 
     public static RectTransform NewRect(string name, Transform parent)
@@ -99,7 +155,7 @@ public static class UIFactory
     public static Image CreateBackground(Transform parent, Color color)
     {
         var rect = CreateFullScreen("Background", parent);
-        var image = rect.gameObject.AddComponent<Image>();
+        var image = EnsureComponent<Image>(rect.gameObject);
         image.sprite = WhiteSprite;
         image.color = color;
         image.raycastTarget = true;
@@ -109,14 +165,18 @@ public static class UIFactory
     /// <summary>居中的面板，指定尺寸。</summary>
     public static RectTransform CreateCenteredPanel(Transform parent, Vector2 size, Color color)
     {
-        var rect = NewRect("Panel", parent);
-        rect.anchorMin = new Vector2(0.5f, 0.5f);
-        rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.sizeDelta = size;
-        rect.anchoredPosition = Vector2.zero;
+        var rect = EnsureRect("Panel", parent);
 
-        var image = rect.gameObject.AddComponent<Image>();
+        if (ApplyLayout)
+        {
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = size;
+            rect.anchoredPosition = Vector2.zero;
+        }
+
+        var image = EnsureComponent<Image>(rect.gameObject);
         image.sprite = WhiteSprite;
         image.color = color;
         image.raycastTarget = true;
@@ -128,14 +188,21 @@ public static class UIFactory
         Transform parent, string content, float fontSize, Color color,
         TextAlignmentOptions alignment, Vector2 size, Vector2 anchoredPosition)
     {
-        var rect = NewRect("Text", parent);
-        rect.anchorMin = new Vector2(0.5f, 0.5f);
-        rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.sizeDelta = size;
-        rect.anchoredPosition = anchoredPosition;
+        // 用文本内容当对象名：既方便复用，也让 Hierarchy 里一眼看懂
+        string objectName = string.IsNullOrWhiteSpace(content) ? "Text" : content.Trim();
 
-        var text = rect.gameObject.AddComponent<TextMeshProUGUI>();
+        var rect = EnsureRect(objectName, parent);
+
+        if (ApplyLayout)
+        {
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = size;
+            rect.anchoredPosition = anchoredPosition;
+        }
+
+        var text = EnsureComponent<TextMeshProUGUI>(rect.gameObject);
         text.font = UIStyle.Font;
         text.text = content;
         text.fontSize = fontSize;
@@ -151,18 +218,25 @@ public static class UIFactory
     public static Button CreateButton(
         Transform parent, string label, Vector2 size, Vector2 anchoredPosition, UnityAction onClick)
     {
-        var rect = NewRect("Button", parent);
-        rect.anchorMin = new Vector2(0.5f, 0.5f);
-        rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.sizeDelta = size;
-        rect.anchoredPosition = anchoredPosition;
+        // 用按钮文字当对象名，便于复用与在 Hierarchy 中辨认
+        string objectName = string.IsNullOrWhiteSpace(label) ? "Button" : label.Trim();
 
-        var image = rect.gameObject.AddComponent<Image>();
+        var rect = EnsureRect(objectName, parent);
+
+        if (ApplyLayout)
+        {
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = size;
+            rect.anchoredPosition = anchoredPosition;
+        }
+
+        var image = EnsureComponent<Image>(rect.gameObject);
         image.sprite = WhiteSprite;
         image.color = Color.white; // 真正的颜色交给 ColorBlock，便于悬停变色
 
-        var button = rect.gameObject.AddComponent<Button>();
+        var button = EnsureComponent<Button>(rect.gameObject);
         button.targetGraphic = image;
 
         var colors = button.colors;
@@ -175,6 +249,9 @@ public static class UIFactory
         colors.fadeDuration = 0.08f;
         button.colors = colors;
 
+        // 复用的时候监听会被重复注册，所以先清空再加
+        button.onClick.RemoveAllListeners();
+
         if (onClick != null)
             button.onClick.AddListener(onClick);
 
@@ -183,7 +260,7 @@ public static class UIFactory
         textRect.offsetMin = new Vector2(12f, 0f);
         textRect.offsetMax = new Vector2(-12f, 0f);
 
-        var text = textRect.gameObject.AddComponent<TextMeshProUGUI>();
+        var text = EnsureComponent<TextMeshProUGUI>(textRect.gameObject);
         text.font = UIStyle.Font;
         text.text = label;
         text.fontSize = 34f;
