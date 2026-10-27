@@ -65,6 +65,9 @@ public class AIAssistant : MonoBehaviour
     [Header("按键")]
     public KeyCode toggleKey = KeyCode.Tab;
 
+    private const float ButtonWidth = 78f;
+    private const float ButtonGap = 8f;
+
     // ---- 运行时引用 ----
     private Canvas canvas;
     private RectTransform assistantRoot;
@@ -75,8 +78,23 @@ public class AIAssistant : MonoBehaviour
     private TMP_Text counterText;
     private TMP_InputField inputField;
     private Button sendButton;
+    private Button micButton;
+    private TMP_Text micLabel;
+    private Button speakButton;
+    private TMP_Text speakLabel;
 
     private AssistantChatClient client;
+    private MicrophoneRecorder recorder;
+    private BaiduSpeechClient speech;
+    private BaiduTtsClient tts;
+
+    private AudioSource voiceSource;
+    private AudioClip currentVoiceClip;
+    private bool speakReplies = true;
+
+    private bool recordingVoice;
+    private bool isRecognizing;
+    private int voiceSession;
 
     private bool panelOpen;
     private bool pausedByMe;
@@ -112,6 +130,29 @@ public class AIAssistant : MonoBehaviour
 
         if (client == null)
             client = gameObject.AddComponent<AssistantChatClient>();
+
+        recorder = GetComponent<MicrophoneRecorder>();
+
+        if (recorder == null)
+            recorder = gameObject.AddComponent<MicrophoneRecorder>();
+
+        speech = GetComponent<BaiduSpeechClient>();
+
+        if (speech == null)
+            speech = gameObject.AddComponent<BaiduSpeechClient>();
+
+        tts = GetComponent<BaiduTtsClient>();
+
+        if (tts == null)
+            tts = gameObject.AddComponent<BaiduTtsClient>();
+
+        voiceSource = GetComponent<AudioSource>();
+
+        if (voiceSource == null)
+            voiceSource = gameObject.AddComponent<AudioSource>();
+
+        voiceSource.playOnAwake = false;
+        voiceSource.loop = false;
 
         ApplySettingsFromAsset();
         BuildUI();
@@ -234,6 +275,10 @@ public class AIAssistant : MonoBehaviour
 
         if (!shouldShow && panelOpen)
             SetPanelOpen(false);
+
+        // 被别的界面盖住时，正在播放的语音也要停
+        if (!shouldShow)
+            StopSpeaking();
 
         assistantRoot.gameObject.SetActive(shouldShow);
     }
@@ -508,7 +553,6 @@ public class AIAssistant : MonoBehaviour
     private void BuildInputRow(RectTransform panel)
     {
         const float rowHeight = 56f;
-        const float sendWidth = 92f;
 
         // 输入框
         RectTransform inputRect = UIFactory.NewRect("Input", panel);
@@ -516,7 +560,7 @@ public class AIAssistant : MonoBehaviour
         inputRect.anchorMax = new Vector2(1f, 0f);
         inputRect.pivot = new Vector2(0f, 0f);
         inputRect.offsetMin = new Vector2(0f, 0f);
-        inputRect.offsetMax = new Vector2(-(sendWidth + 8f), rowHeight);
+        inputRect.offsetMax = new Vector2(-(ButtonWidth * 3f + ButtonGap * 3f), rowHeight);
 
         var inputBg = inputRect.gameObject.AddComponent<Image>();
         inputBg.sprite = UIFactory.WhiteSprite;
@@ -571,7 +615,7 @@ public class AIAssistant : MonoBehaviour
         sendRect.anchorMin = new Vector2(1f, 0f);
         sendRect.anchorMax = new Vector2(1f, 0f);
         sendRect.pivot = new Vector2(1f, 0f);
-        sendRect.sizeDelta = new Vector2(sendWidth, rowHeight);
+        sendRect.sizeDelta = new Vector2(ButtonWidth, rowHeight);
         sendRect.anchoredPosition = Vector2.zero;
 
         var sendBg = sendRect.gameObject.AddComponent<Image>();
@@ -598,6 +642,257 @@ public class AIAssistant : MonoBehaviour
         sendLabel.color = UIStyle.TextColor;
         sendLabel.alignment = TextAlignmentOptions.Center;
         sendLabel.raycastTarget = false;
+
+        // 语音按钮（在发送按钮左边）
+        RectTransform micRect = UIFactory.NewRect("Mic", panel);
+        micRect.anchorMin = new Vector2(1f, 0f);
+        micRect.anchorMax = new Vector2(1f, 0f);
+        micRect.pivot = new Vector2(1f, 0f);
+        micRect.sizeDelta = new Vector2(ButtonWidth, rowHeight);
+        micRect.anchoredPosition = new Vector2(-(ButtonWidth + ButtonGap), 0f);
+
+        var micBg = micRect.gameObject.AddComponent<Image>();
+        micBg.sprite = UIFactory.WhiteSprite;
+        micBg.color = Color.white;
+
+        micButton = micRect.gameObject.AddComponent<Button>();
+        micButton.targetGraphic = micBg;
+
+        var micColors = micButton.colors;
+        micColors.normalColor = UIStyle.ButtonColor;
+        micColors.highlightedColor = UIStyle.ButtonHighlightColor;
+        micColors.pressedColor = UIStyle.AccentColor;
+        micColors.colorMultiplier = 1f;
+        micButton.colors = micColors;
+
+        micButton.onClick.AddListener(OnMicClicked);
+
+        RectTransform micLabelRect = UIFactory.CreateFullScreen("Label", micRect);
+        micLabel = micLabelRect.gameObject.AddComponent<TextMeshProUGUI>();
+        micLabel.font = UIStyle.Font;
+        micLabel.text = "语音";
+        micLabel.fontSize = 24f;
+        micLabel.color = UIStyle.TextColor;
+        micLabel.alignment = TextAlignmentOptions.Center;
+        micLabel.raycastTarget = false;
+
+        // 朗读开关（在语音按钮左边）
+        RectTransform speakRect = UIFactory.NewRect("Speak", panel);
+        speakRect.anchorMin = new Vector2(1f, 0f);
+        speakRect.anchorMax = new Vector2(1f, 0f);
+        speakRect.pivot = new Vector2(1f, 0f);
+        speakRect.sizeDelta = new Vector2(ButtonWidth, rowHeight);
+        speakRect.anchoredPosition = new Vector2(-(ButtonWidth + ButtonGap) * 2f, 0f);
+
+        var speakBg = speakRect.gameObject.AddComponent<Image>();
+        speakBg.sprite = UIFactory.WhiteSprite;
+        speakBg.color = Color.white;
+
+        speakButton = speakRect.gameObject.AddComponent<Button>();
+        speakButton.targetGraphic = speakBg;
+
+        var speakColors = speakButton.colors;
+        speakColors.normalColor = UIStyle.ButtonColor;
+        speakColors.highlightedColor = UIStyle.ButtonHighlightColor;
+        speakColors.pressedColor = UIStyle.AccentColor;
+        speakColors.colorMultiplier = 1f;
+        speakButton.colors = speakColors;
+
+        speakButton.onClick.AddListener(OnSpeakToggleClicked);
+
+        RectTransform speakLabelRect = UIFactory.CreateFullScreen("Label", speakRect);
+        speakLabel = speakLabelRect.gameObject.AddComponent<TextMeshProUGUI>();
+        speakLabel.font = UIStyle.Font;
+        speakLabel.text = "朗读";
+        speakLabel.fontSize = 24f;
+        speakLabel.color = UIStyle.TextColor;
+        speakLabel.alignment = TextAlignmentOptions.Center;
+        speakLabel.raycastTarget = false;
+
+        RefreshSpeakLabel();
+    }
+
+    // ---------------------------------------------------------------- 语音输出
+
+    private void OnSpeakToggleClicked()
+    {
+        speakReplies = !speakReplies;
+
+        if (!speakReplies)
+            StopSpeaking();
+
+        RefreshSpeakLabel();
+    }
+
+    private void RefreshSpeakLabel()
+    {
+        if (speakLabel == null)
+            return;
+
+        speakLabel.text = speakReplies ? "朗读" : "静音";
+    }
+
+    /// <summary>把助手的话念出来。失败只打日志，不影响文字对话。</summary>
+    private IEnumerator SpeakRoutine(string text)
+    {
+        if (!speakReplies || voiceSource == null || tts == null || string.IsNullOrWhiteSpace(text))
+            yield break;
+
+        AudioClip clip = null;
+        string error = null;
+
+        yield return StartCoroutine(tts.Synthesize(text, c => clip = c, e => error = e));
+
+        if (clip == null)
+        {
+            if (!string.IsNullOrEmpty(error))
+                Debug.LogWarning($"[助手] 语音播报失败：{error}");
+            yield break;
+        }
+
+        // 清掉上一次的音频，避免越积越多
+        if (currentVoiceClip != null)
+            Destroy(currentVoiceClip);
+
+        currentVoiceClip = clip;
+
+        voiceSource.Stop();
+        voiceSource.clip = clip;
+        voiceSource.Play();
+    }
+
+    private void StopSpeaking()
+    {
+        if (voiceSource != null && voiceSource.isPlaying)
+            voiceSource.Stop();
+    }
+
+    // ---------------------------------------------------------------- 语音输入
+
+    private void OnMicClicked()
+    {
+        if (isRecognizing)
+            return;
+
+        if (recordingVoice)
+        {
+            StartCoroutine(StopAndRecognizeRoutine());
+            return;
+        }
+
+        if (isBusy)
+            return;
+
+        StartCoroutine(StartRecordingRoutine());
+    }
+
+    private void UpdateMicLabel()
+    {
+        if (micLabel == null)
+            return;
+
+        micLabel.text = isRecognizing ? "识别中" : (recordingVoice ? "停止" : "语音");
+    }
+
+    private IEnumerator StartRecordingRoutine()
+    {
+        SetBubble("正在准备麦克风…", "idle");
+
+        yield return StartCoroutine(recorder.RequestPermission());
+
+        if (!recorder.HasPermission)
+        {
+            SetBubble("没有麦克风权限，无法语音提问。", "shake");
+            yield break;
+        }
+
+        if (!recorder.StartRecording(out string error))
+        {
+            SetBubble(string.IsNullOrEmpty(error) ? "麦克风不可用。" : error, "shake");
+            yield break;
+        }
+
+        voiceSession++;
+        recordingVoice = true;
+        UpdateMicLabel();
+
+        SetBubble("正在听…（说完再点一次）", "think");
+
+        // 到最长时长自动结束，避免一直录下去
+        float deadline = Time.unscaledTime + Mathf.Max(1, recorder.maxSeconds);
+
+        while (recordingVoice && Time.unscaledTime < deadline)
+            yield return null;
+
+        if (recordingVoice)
+            StartCoroutine(StopAndRecognizeRoutine());
+    }
+
+    private IEnumerator StopAndRecognizeRoutine()
+    {
+        if (!recordingVoice)
+            yield break;
+
+        int session = voiceSession;
+
+        recordingVoice = false;
+        UpdateMicLabel();
+
+        RecordingResult result = recorder.StopRecording();
+
+        if (result == null || !result.IsUsable)
+        {
+            SetBubble("没听清，能再说一遍吗？", "shake");
+            yield break;
+        }
+
+        isRecognizing = true;
+        UpdateMicLabel();
+        SetBubble("正在识别…", "think");
+
+        string text = null;
+        string error = null;
+
+        yield return StartCoroutine(speech.Recognize(
+            result.pcm, result.sampleRate,
+            t => text = t,
+            e => error = e));
+
+        // 识别期间面板被关掉或界面被隐藏了，就丢弃结果
+        if (session != voiceSession)
+            yield break;
+
+        isRecognizing = false;
+        UpdateMicLabel();
+
+        if (string.IsNullOrEmpty(text))
+        {
+            SetBubble(string.IsNullOrEmpty(error) ? "没听清，能再说一遍吗？" : error, "shake");
+            yield break;
+        }
+
+        if (inputField != null)
+            inputField.text = text;
+
+        AskQuestion(text);
+
+        if (inputField != null)
+            inputField.text = string.Empty;
+    }
+
+    /// <summary>中途取消录音/识别（关面板、被别的界面盖住时调用）。</summary>
+    private void CancelVoice()
+    {
+        voiceSession++;
+
+        if (recordingVoice)
+        {
+            recorder?.Cancel();
+            recordingVoice = false;
+        }
+
+        isRecognizing = false;
+        UpdateMicLabel();
     }
 
     // ---------------------------------------------------------------- 交互
@@ -611,6 +906,10 @@ public class AIAssistant : MonoBehaviour
     {
         if (inputField == null)
             return;
+
+        // 用文字发送时，把正在进行的录音丢掉
+        if (recordingVoice || isRecognizing)
+            CancelVoice();
 
         string question = inputField.text;
 
@@ -684,6 +983,9 @@ public class AIAssistant : MonoBehaviour
         }
 
         SetBubble(reply.say, reply.action);
+
+        // 念出来（关闭朗读时不播）
+        StartCoroutine(SpeakRoutine(reply.say));
     }
 
     private void SetPanelOpen(bool open)
@@ -706,6 +1008,9 @@ public class AIAssistant : MonoBehaviour
         }
         else
         {
+            // 关面板时如果还在录音/识别，一并取消，避免麦克风一直开着
+            CancelVoice();
+
             if (pausedByMe)
             {
                 PauseController.ReleasePause();
