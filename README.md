@@ -9,9 +9,9 @@
 
 ## 📖 项目简介
 
-《诗词冒险》是一款面向 K12 语文启蒙的 2D 像素风角色扮演游戏。玩家扮演一名小勇士，在两张开放地图上探索、战斗、采集，沿途拜访**十位诗人 NPC**，逐一学习十首经典古诗。
+《诗词冒险》是一款面向低龄儿童语文启蒙的 2D 像素风角色扮演游戏。玩家扮演一名小骑士，在两张开放地图上探索、战斗、采集，沿途拜访多位诗人 NPC，逐一学习其所著的经典古诗词。
 
-与常见的「点开卡片读注释」不同，这款游戏把 **大模型与语音技术** 真正接进了学习闭环：
+与常见的「点开卡片读注释」不同，这款游戏把 **大模型与语音技术** 接入了学习闭环：
 
 - 想读懂一首诗？直接在游戏里问 AI，**DeepSeek** 当场给出 150–220 字的客观释义；
 - 想看见诗里的画面？**通义万相**根据诗意实时生成一张古风插画；
@@ -27,27 +27,50 @@
 
 ---
 
+## 📸 游戏截图
+
+<table>
+  <tr>
+    <td width="50%"><img src="Screenshots/HomeScreen.png"><br><sub><b>开局界面</b> · 封面 + 竹简横幅 + 九宫格按钮</sub></td>
+    <td width="50%"><img src="Screenshots/GameScreen.png"><br><sub><b>探索地图</b> · 像素风场景与 HUD</sub></td>
+  </tr>
+  <tr>
+    <td><img src="Screenshots/MenuBar.png"><br><sub><b>左下角功能栏</b> · 属性 / 技能 / 任务 / 菜单 四键并列</sub></td>
+    <td><img src="Screenshots/DialogueScreen.png"><br><sub><b>诗人对话</b> · 立绘 + 台词 + 选项</sub></td>
+  </tr>
+  <tr>
+    <td><img src="Screenshots/SaveScreen.png"><br><sub><b>存档界面</b> · 三档位，显示时间 / 等级 / 金币</sub></td>
+    <td><img src="Screenshots/SkillScreen.png"><br><sub><b>技能树</b> · 24 节点，支持前置解锁与加点</sub></td>
+  </tr>
+  <tr>
+    <td><img src="Screenshots/ShopScreen.png"><br><sub><b>商店</b> · 道具 / 武器 / 护甲 分页签</sub></td>
+    <td><img src="Screenshots/TaskTable.png"><br><sub><b>任务板</b> · 接受 / 放弃 / 交付</sub></td>
+  </tr>
+</table>
+
+---
+
 ## ✨ 功能特性
 
-| | 特性 | 说明 |
-|---|---|---|
-| 📚 | **十首经典古诗** | 《咏鹅》《春晓》《池上》《静夜思》《所见》《悯农》《寻隐者不遇》《登鹳雀楼》《风》《小儿垂钓》，全部数据化，可自由增删 |
-| 🤖 | **AI 实时释义** | 默认接入 **DeepSeek 官方 API**（`deepseek-chat`），按「客观、简洁、150–220 字、不分标题不列表」的提示词规范生成释义；另支持百炼原生 / 兼容两种通道，可随时切换 |
-| 🎨 | **AI 实时配图** | 接入通义万相 `wan2.7-image-pro`，由诗词专属提示词生成 1024×576 古风插画并即时贴到画布上 |
-| 🏷️ | **内容来源角标** | 每份内容都标注 `内置内容` / `AI 实时生成` / `AI 生成 · 已缓存`，既是信息提示，也是 AI 生成内容的显式标识 |
-| 💾 | **内容缓存与离线兜底** | 生成过的释义与插画自动落盘复用，**同一首诗只花一次钱**；回填成内置内容后完全离线可用 |
-| 🎤 | **语音背诵考试** | 麦克风采集 16 kHz PCM → 百度短语音识别 → **汉字转拼音 + 编辑距离相似度**判分，个别字听错也不会直接判负 |
-| ✅ | **选择题考试** | 四选一诗词常识题（如「《池上》中小孩子偷偷采摘的是什么？」），答对获得信物 |
-| 🧙 | **AI 助手「红骑士」** | 右下角常驻立绘，支持**打字提问、语音提问、语音朗读回答**；输出指令化 JSON 驱动角色动作，序列帧循环播放 |
-| 🗒️ | **三档位存档** | 标题界面 / Esc 菜单 / 存档列表；记录位置、生命、金币、经验、背包、任务、**技能等级与加点**、已通过的考核；`F5` 快存、`F9` 快读 |
-| 📜 | **完整任务系统** | 目标支持**物品 / 地点 / 对话**三种判定方式；含任务板、任务日志、接受/放弃/交付流程 |
-| 🎒 | **背包与商店** | 物品堆叠、使用、丢弃、掉落；商店支持分页签（道具/武器/护甲）、购买与出售 |
-| ⚔️ | **动作战斗** | 近战挥砍与弓箭射击双武器切换、冷却、击退与硬直、命中范围可视化 |
-| 📈 | **成长系统** | 击杀与道具获得经验、连续升级、24 节点技能树（攻击 / 生命 / 速度） |
-| 🕹️ | **PC 与移动端统一输入** | 同一套键位逻辑：编辑器/PC 用键盘，真机自动切换为虚拟摇杆 + 触摸按钮；UI 全层纳入安全区适配 |
-| 🗺️ | **双场景与存档式持久化** | 两张地图自由往返，玩家、UI、背包、任务进度跨场景保留 |
-| 💬 | **数据驱动对话系统** | 支持条件解锁、选项分支、问答判定、任务挂接，台词里可用 `{PoemTitle}` `{Poet}` `{PoemContent}` `{SelectedLines}` 占位符自动注入诗词内容 |
-| 🎛️ | **可视化 UI 配置** | 菜单界面是可在 Unity 中直接编辑的预制体；样式、贴图、配色、布局数值集中在 `UIStyleSettings` 资源里 |
+|     | 特性              | 说明                                                                                                    |
+| --- | --------------- | ----------------------------------------------------------------------------------------------------- |
+| 📚  | **十首经典古诗**      | 《咏鹅》《春晓》《池上》《静夜思》《所见》《悯农》《寻隐者不遇》《登鹳雀楼》《风》《小儿垂钓》，全部数据化，可自由增删                                           |
+| 🤖  | **AI 实时释义**     | 默认接入 **DeepSeek 官方 API**（`deepseek-chat`），按「客观、简洁、150–220 字、不分标题不列表」的提示词规范生成释义；另支持百炼原生 / 兼容两种通道，可随时切换 |
+| 🎨  | **AI 实时配图**     | 接入通义万相 `wan2.7-image-pro`，由诗词专属提示词生成 1024×576 古风插画并即时贴到画布上                                            |
+| 🏷️ | **内容来源角标**      | 每份内容都标注 `内置内容` / `AI 实时生成` / `AI 生成 · 已缓存`，既是信息提示，也是 AI 生成内容的显式标识                                     |
+| 💾  | **内容缓存与离线兜底**   | 生成过的释义与插画自动落盘复用，**同一首诗只花一次钱**；回填成内置内容后完全离线可用                                                          |
+| 🎤  | **语音背诵考试**      | 麦克风采集 16 kHz PCM → 百度短语音识别 → **汉字转拼音 + 编辑距离相似度**判分，个别字听错也不会直接判负                                       |
+| ✅   | **选择题考试**       | 四选一诗词常识题（如「《池上》中小孩子偷偷采摘的是什么？」），答对获得信物                                                                 |
+| 🧙  | **AI 助手「红骑士」**  | 右下角常驻立绘，支持**打字提问、语音提问、语音朗读回答**；输出指令化 JSON 驱动角色动作，序列帧循环播放                                              |
+| 🗒️ | **三档位存档**       | 标题界面 / Esc 菜单 / 存档列表；记录位置、生命、金币、经验、背包、任务、**技能等级与加点**、已通过的考核；`F5` 快存、`F9` 快读                           |
+| 📜  | **完整任务系统**      | 目标支持**物品 / 地点 / 对话**三种判定方式；含任务板、任务日志、接受/放弃/交付流程                                                       |
+| 🎒  | **背包与商店**       | 物品堆叠、使用、丢弃、掉落；商店支持分页签（道具/武器/护甲）、购买与出售                                                                 |
+| ⚔️  | **动作战斗**        | 近战挥砍与弓箭射击双武器切换、冷却、击退与硬直、命中范围可视化                                                                       |
+| 📈  | **成长系统**        | 击杀与道具获得经验、连续升级、24 节点技能树（攻击 / 生命 / 速度）                                                                 |
+| 🕹️ | **PC 与移动端统一输入** | 同一套键位逻辑：编辑器/PC 用键盘，真机自动切换为虚拟摇杆 + 触摸按钮；UI 全层纳入安全区适配                                                    |
+| 🗺️ | **双场景与存档式持久化**  | 两张地图自由往返，玩家、UI、背包、任务进度跨场景保留                                                                           |
+| 💬  | **数据驱动对话系统**    | 支持条件解锁、选项分支、问答判定、任务挂接，台词里可用 `{PoemTitle}` `{Poet}` `{PoemContent}` `{SelectedLines}` 占位符自动注入诗词内容      |
+| 🎛️ | **可视化 UI 配置**   | 菜单界面是可在 Unity 中直接编辑的预制体；样式、贴图、配色、布局数值集中在 `UIStyleSettings` 资源里                                        |
 
 ---
 
@@ -57,76 +80,85 @@
 
 ```
         ┌───────────────── 探索 ─────────────────┐
-        │  打怪 · 采集蘑菇/肉排 · 拾取金币与经验        │
+        │  打怪 · 采集蘑菇/肉排 · 拾取金币与经验    │
         └────────────────────┬──────────────────┘
-                             │
+                               │
       ┌──────────────────────┼───────────────────────┐
-      ▼                      ▼                       ▼
-   诗人 NPC               考官 NPC                彩色 NPC
-   （10 位）              （10 位）            （蓝 / 黄 / 紫）
-      │                      │                       │
-   诗词对话              语音背诵考试             任务对话
-      │                 （说出下一句）           （新手任务链）
-      ├─► 解读：AI 生成诗词释义                       │
-      │                                       答对得「骨头」
-      └─► 配图：AI 生成古风插画                       │
-                             │                      │
-                       通过得「南瓜」                 │
-                             └───────────┬──────────┘
-                                         ▼
-                          任务板交付（10 骨头 / 10 南瓜）
-                                         ▼
-                              奖励：100 经验 + 50 金币
-                                         ▼
-                            升级 → 技能点 → 24 节点技能树
+      ▼                        ▼                         ▼
+   诗人 NPC                 考官 NPC                普通任务 NPC
+      │                        │                         │
+   诗词对话               语音背诵考试                任务对话
+      │                  （说出下一句）            （新手任务链）
+      ├─► 解读：AI 生成诗词释义                           │
+      │                                             答对得「骨头」
+      └─► 配图：AI 生成古风插画                           │
+                             │                            │
+                       通过得「南瓜」                     │
+                               └───────────┬──────────┘
+                                            ▼
+                                       任务板交付
+                                            ▼
+                                奖励：100 经验 + 50 金币
+                                            ▼
+                                升级 → 技能点 → 技能树
 ```
 
-### 收录古诗
+### 诗词配图（AI 生成）
 
-| 编号 | 诗名 | 作者 | 名句 |
-| :---: | --- | --- | --- |
-| 1 | 咏鹅 | 骆宾王 | 白毛浮绿水，红掌拨清波。 |
-| 2 | 春晓 | 孟浩然 | 夜来风雨声，花落知多少。 |
-| 3 | 池上 | 白居易 | 不解藏踪迹，浮萍一道开。 |
-| 4 | 静夜思 | 李白 | 举头望明月，低头思故乡。 |
-| 5 | 所见 | 袁枚 | 意欲捕鸣蝉，忽然闭口立。 |
-| 6 | 悯农（其二） | 李绅 | 谁知盘中餐，粒粒皆辛苦。 |
-| 7 | 寻隐者不遇 | 贾岛 | 只在此山中，云深不知处。 |
-| 8 | 登鹳雀楼 | 王之涣 | 欲穷千里目，更上一层楼。 |
-| 9 | 风 | 李峤 | 过江千尺浪，入竹万竿斜。 |
-| 10 | 小儿垂钓 | 胡令能 | 路人借问遥招手，怕得鱼惊不应人。 |
+<p align="center">
+  <img src="Screenshots/PoemPicture.png" width="720">
+</p>
+
+<p align="center">
+  <sub>《咏鹅》的 AI 生成插画 · 左上角与右下角的 <code>AI 生成 · 已缓存</code> 角标即为内容来源标识</sub>
+</p>
+
+### 已收录古诗
+
+| 编号  | 诗名     | 作者  | 名句               |
+|:---:| ------ | --- | ---------------- |
+| 1   | 咏鹅     | 骆宾王 | 白毛浮绿水，红掌拨清波。     |
+| 2   | 春晓     | 孟浩然 | 夜来风雨声，花落知多少。     |
+| 3   | 池上     | 白居易 | 不解藏踪迹，浮萍一道开。     |
+| 4   | 静夜思    | 李白  | 举头望明月，低头思故乡。     |
+| 5   | 所见     | 袁枚  | 意欲捕鸣蝉，忽然闭口立。     |
+| 6   | 悯农（其二） | 李绅  | 谁知盘中餐，粒粒皆辛苦。     |
+| 7   | 寻隐者不遇  | 贾岛  | 只在此山中，云深不知处。     |
+| 8   | 登鹳雀楼   | 王之涣 | 欲穷千里目，更上一层楼。     |
+| 9   | 风      | 李峤  | 过江千尺浪，入竹万竿斜。     |
+| 10  | 小儿垂钓   | 胡令能 | 路人借问遥招手，怕得鱼惊不应人。 |
 
 ### NPC 与任务
 
-| 角色 | 职责 |
-| --- | --- |
+| 角色          | 职责                         |
+| ----------- | -------------------------- |
 | 诗人 NPC × 10 | 一人对应一首诗，提供对话、AI 解读、AI 配图入口 |
-| 考官 NPC × 10 | 语音背诵考试，通过奖励 1 个「南瓜」 |
-| 紫色 NPC | 选择题考官，答对奖励 1 根「骨头」 |
-| 蓝色 NPC | 新手任务（一）发布者与交付对象 |
-| 黄色 NPC | 新手任务（三）的交谈目标 |
-| 骑士 | 战斗目标 |
+| 考官 NPC × 10 | 语音背诵考试，通过奖励 1 个「南瓜」        |
+| 紫色 NPC      | 选择题考官，答对奖励 1 根「骨头」         |
+| 蓝色 NPC      | 新手任务（一）发布者与交付对象            |
+| 黄色 NPC      | 新手任务（三）的交谈目标               |
+| 骑士          | 战斗目标                       |
 
-| 任务 | 等级 | 目标 | 奖励 |
-| --- | :---: | --- | --- |
-| 新手任务（一） | 1 | 到达山上 + 采集 3 个蘑菇 + 回到蓝色 NPC 处 | 10 经验、10 金币、3 蘑菇 |
-| 新手任务（二） | 1 | 收集 2 个肉排 | 10 经验、10 金币 |
-| 新手任务（三） | 1 | 与黄色 NPC 交谈 | — |
-| 诗词考试 | 10 | 选择题考试累计 10 根骨头 | 100 经验、50 金币 |
-| 拼读考试 | 10 | 语音背诵考核累计 10 个南瓜 | 100 经验、50 金币 |
+| 任务      | 等级  | 目标                           | 奖励               |
+| ------- |:---:| ---------------------------- | ---------------- |
+| 新手任务（一） | 1   | 到达山上 + 采集 3 个蘑菇 + 回到蓝色 NPC 处 | 10 经验、10 金币、3 蘑菇 |
+| 新手任务（二） | 1   | 收集 2 个肉排                     | 10 经验、10 金币      |
+| 新手任务（三） | 1   | 与黄色 NPC 交谈                   | —                |
+| 诗词考试    | 10  | 选择题考试累计 10 根骨头               | 100 经验、50 金币     |
+| 拼读考试    | 10  | 语音背诵考核累计 10 个南瓜              | 100 经验、50 金币     |
 
 ### 操作说明
 
-| 按键 | 功能 | 按键 | 功能 |
-| :---: | --- | :---: | --- |
-| `W A S D` / 方向键 | 移动 | `Q` | 属性面板 |
-| `J` | 近战攻击 | `E` | 技能树 |
-| `K` | 射箭 | `Z` | 开始 / 停止录音 |
-| `V` | 切换近战 / 弓箭 | `1` `2` `3` | 使用物品（商店内为出售） |
-| `F` | 交互（对话 / 考试 / 解读 / 配图 / 商店 / 任务板） | `4` `5` `6` | 丢弃物品 |
-| `Tab` | 唤起 / 收起 AI 助手 | `Esc` | 游戏菜单（继续 / 保存 / 读取 / 标题） |
-| `F5` | 快速存档 | `F9` | 快速读档 |
-| `F11` | 模型连通性诊断（排查 AI 接口用） | — | — |
+| 按键              | 功能                               | 按键          | 功能                      |
+|:---------------:| -------------------------------- |:-----------:| ----------------------- |
+| `W A S D` / 方向键 | 移动                               | `Q`         | 属性面板                    |
+| `J`             | 近战攻击                             | `E`         | 技能树                     |
+| `K`             | 射箭                               | `Z`         | 开始 / 停止录音               |
+| `V`             | 切换近战 / 弓箭                        | `1` `2` `3` | 使用物品（商店内为出售）            |
+| `F`             | 交互（对话 / 考试 / 解读 / 配图 / 商店 / 任务板） | `4` `5` `6` | 丢弃物品                    |
+| `Tab`           | 唤起 / 收起 AI 助手                    | `Esc`       | 游戏菜单（继续 / 保存 / 读取 / 标题） |
+| `F5`            | 快速存档                             | `F9`        | 快速读档                    |
+| `F11`           | 模型连通性诊断（排查 AI 接口用）               | —           | —                       |
 
 > 移动端无需改代码：`MobileInputManager` 会在真机上自动启用虚拟摇杆与触摸按钮，在编辑器与 PC 上自动隐藏本套 UI 并切换为键盘操作。
 
@@ -137,6 +169,14 @@
 右下角常驻一位立绘角色，是本项目里 AI 能力最集中的部分。
 
 ### 形象与表现
+
+<p align="center">
+  <img src="Screenshots/AIAssistant.png" width="320">
+</p>
+
+<p align="center">
+  <sub>右下角常驻的红骑士 · 上半身特写 + 剩余提问次数</sub>
+</p>
 
 - **立绘相框**：放大显示角色上半身，用 `RectMask2D` 裁切，尺寸与对话系统的 NPC 头像一致
 - **序列帧动画**：支持精灵表逐帧播放（待机循环；进入思考状态时自动降速）
@@ -182,24 +222,24 @@
 
 **建筑与场景**
 
-| | | | |
-| :---: | :---: | :---: | :---: |
+|                                                    |                                                        |                                                   |                                                         |
+|:--------------------------------------------------:|:------------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------------:|
 | ![城堡](Assets/Sprites/Resource/Building/Castle.png) | ![修道院](Assets/Sprites/Resource/Building/Monastery.png) | ![塔楼](Assets/Sprites/Resource/Building/Tower.png) | ![红顶民居](Assets/Sprites/Resource/Building/House_Red.png) |
-| 城堡 | 修道院 | 塔楼 | 民居 |
+| 城堡                                                 | 修道院                                                    | 塔楼                                                | 民居                                                      |
 
 **战斗与道具图标**
 
-| | | | |
-| :---: | :---: | :---: | :---: |
+|                                              |                                               |                                              |                                                                  |
+|:--------------------------------------------:|:---------------------------------------------:|:--------------------------------------------:|:----------------------------------------------------------------:|
 | ![生命](Assets/Sprites/Icons/Combat/Heart.png) | ![攻击](Assets/Sprites/Icons/Combat/Attack.png) | ![速度](Assets/Sprites/Icons/Combat/Speed.png) | ![诗词解读](Assets/Sprites/Resource/3ItemAboutPoems/ItemExplain.png) |
-| 生命 | 攻击 | 速度 | 诗词解读道具 |
+| 生命                                           | 攻击                                            | 速度                                           | 诗词解读道具                                                           |
 
 **角色精灵图（序列帧）**
 
-| | | |
-| :---: | :---: | :---: |
+|                                                        |                                                     |                                               |
+|:------------------------------------------------------:|:---------------------------------------------------:|:---------------------------------------------:|
 | ![诗人 NPC](Assets/Sprites/Resource/NPC/Pawn_Purple.png) | ![考官 NPC](Assets/Sprites/Resource/NPC/Pawn_Red.png) | ![弓箭手](Assets/Sprites/Player/Archer_Blue.png) |
-| 诗人 NPC | 考官 NPC | 弓箭手（玩家） |
+| 诗人 NPC                                                 | 考官 NPC                                              | 弓箭手（玩家）                                       |
 
 > 更多美术资源见 `Assets/Sprites/`（地形、水面、树木、房屋、UI 九宫格、字体、图标等）。
 
@@ -209,61 +249,61 @@
 
 ### 环境与依赖
 
-| 项 | 版本 |
-| --- | --- |
-| Unity | 2022.3.60f1c1（LTS，同系列 2022.3.x 亦可） |
-| C# | 9.0（.NET Standard 2.1） |
-| Cinemachine | 2.10.7（2D 相机边界跟随） |
-| TextMesh Pro | 3.0.9（UI 文本与中文字体） |
-| 2D Feature Set | 2.0.1（Tilemap / 2D 精灵） |
-| 输入系统 | 旧版 Input Manager（未使用 Input System 包） |
-| 分辨率 | 1920 × 1080 |
+| 项              | 版本                                   |
+| -------------- | ------------------------------------ |
+| Unity          | 2022.3.60f1c1（LTS，同系列 2022.3.x 亦可）   |
+| C#             | 9.0（.NET Standard 2.1）               |
+| Cinemachine    | 2.10.7（2D 相机边界跟随）                    |
+| TextMesh Pro   | 3.0.9（UI 文本与中文字体）                    |
+| 2D Feature Set | 2.0.1（Tilemap / 2D 精灵）               |
+| 输入系统           | 旧版 Input Manager（未使用 Input System 包） |
+| 分辨率            | 1920 × 1080                          |
 
 ### 数据驱动：一切内容都是 ScriptableObject
 
-| 资源类型 | 作用 |
-| --- | --- |
-| `PoemSO` | 诗词：标题、作者、正文、AI 释义提示词、AI 配图提示词 |
-| `ItemSO` | 物品：名称、图标、堆叠上限、属性加成、是否可消耗 |
-| `ActorSO` | 角色：名称、立绘 |
-| `DialogueSO` | 对话节点：台词数组、选项、问答判定、任务挂接、显示条件 |
-| `QuestSO` | 任务：目标列表（物品/地点/对话三类）、奖励列表 |
-| `LocationSO` | 地点：ID、显示名 |
-| `SkillSO` | 技能：名称、等级上限、每级增量、图标 |
+| 资源类型         | 作用                            |
+| ------------ | ----------------------------- |
+| `PoemSO`     | 诗词：标题、作者、正文、AI 释义提示词、AI 配图提示词 |
+| `ItemSO`     | 物品：名称、图标、堆叠上限、属性加成、是否可消耗      |
+| `ActorSO`    | 角色：名称、立绘                      |
+| `DialogueSO` | 对话节点：台词数组、选项、问答判定、任务挂接、显示条件   |
+| `QuestSO`    | 任务：目标列表（物品/地点/对话三类）、奖励列表      |
+| `LocationSO` | 地点：ID、显示名                     |
+| `SkillSO`    | 技能：名称、等级上限、每级增量、图标            |
 
 ### 事件驱动：系统之间零硬引用
 
-| 事件 | 发布者 | 订阅者 |
-| --- | --- | --- |
-| `QuestEvents.OnQuestOfferRequested` / `OnQuestTurnInRequested` | `DialogueManager`、`QuestBoard` | `QuestLogUI` |
-| `QuestEvents.OnQuestAccepted` | `QuestLogUI` | `NPCTalk`、`PoemTalk`（移除已发放的任务对话） |
-| `QuestEvents.IsQuestComplete` | `QuestManager` | `QuestBoard`、`DialogueSO` |
-| `EnemyHealth.OnMonsterDefeated` | `EnemyHealth` | `ExpManager` |
-| `InventoryManager.OnExperienceGained` | `InventoryManager` | `ExpManager` |
-| `Loot.OnItemLooted` | `Loot` | `InventoryManager` |
-| `ShopKeeper.OnShopStateChanged` | `ShopKeeper` | `InventorySlot`（决定按键是「使用」还是「出售」） |
-| `SkillSlot.OnAbilityPointSpent` / `OnSkillMaxed` | `SkillSlot` | `SkillManager`（结算属性）、`SkillTreeManager`（扣点与解锁） |
+| 事件                                                             | 发布者                            | 订阅者                                            |
+| -------------------------------------------------------------- | ------------------------------ | ---------------------------------------------- |
+| `QuestEvents.OnQuestOfferRequested` / `OnQuestTurnInRequested` | `DialogueManager`、`QuestBoard` | `QuestLogUI`                                   |
+| `QuestEvents.OnQuestAccepted`                                  | `QuestLogUI`                   | `NPCTalk`、`PoemTalk`（移除已发放的任务对话）               |
+| `QuestEvents.IsQuestComplete`                                  | `QuestManager`                 | `QuestBoard`、`DialogueSO`                      |
+| `EnemyHealth.OnMonsterDefeated`                                | `EnemyHealth`                  | `ExpManager`                                   |
+| `InventoryManager.OnExperienceGained`                          | `InventoryManager`             | `ExpManager`                                   |
+| `Loot.OnItemLooted`                                            | `Loot`                         | `InventoryManager`                             |
+| `ShopKeeper.OnShopStateChanged`                                | `ShopKeeper`                   | `InventorySlot`（决定按键是「使用」还是「出售」）               |
+| `SkillSlot.OnAbilityPointSpent` / `OnSkillMaxed`               | `SkillSlot`                    | `SkillManager`（结算属性）、`SkillTreeManager`（扣点与解锁） |
 
 ### 主要系统
 
-| 模块 | 目录 | 职责 |
-| --- | --- | --- |
-| 全局管理 | `Scripts/GameManager.cs` | 单例、跨场景持久化对象注册 |
-| 输入 | `Scripts/MobileScript/` | PC / 移动端统一输入抽象 |
-| 玩家 | `Scripts/Player/` | 移动、近战、弓箭、血量、属性、经验、死亡复活 |
-| 敌人 | `Scripts/Enemy/` | 状态机 AI（待机/追击/攻击/击退）、血量、硬直 |
-| 诗词 | `Scripts/PoemScripts/` | 诗词数据、AI 释义与配图、多通道容错、内容缓存、来源角标、语音背诵考官 |
-| **AI 助手** | `Scripts/Assistant/` | 立绘与动画、指令化对话协议、语音识别、语音合成、百度 token 共用 |
-| **UI 工具链** | `Scripts/UI/` | 代码化 UI 工厂、全局样式、菜单界面预制体、安全区适配 |
-| **存档系统** | `Scripts/Save/` | 三档位 JSON 存档、世界状态、技能与考核进度持久化 |
-| 语音 | `Scripts/Voice/` | 录音、ASR 请求、语音交互 UI |
-| 对话 | `Scripts/NPCScript/` | NPC 状态机（巡逻/游走/交谈）、对话系统、历史记录 |
-| 任务 | `Scripts/QuestSystem/` | 任务管理、任务日志 UI、任务板 |
-| 背包商店 | `Scripts/Inventory&Shop/` | 背包、物品、掉落、使用、商店与物品信息面板 |
-| 技能树 | `Scripts/SkillTree/` | 技能数据、技能槽、前置解锁与加点结算 |
-| UI | `Scripts/UIScripts/` | 菜单管理、统一暂停控制 |
-| 相机 / 地形 / 切场景 | `Scripts/CameraScripts/`、`Scripts/TilemapScripts/`、`Scripts/SceneChange/` | 2D 相机边界、高低差碰撞切换、场景过渡 |
-| 拼音工具 | `Scripts/Plugins/NPinyin/` | 汉字转拼音（第三方库） |
+| 模块            | 目录                                                                        | 职责                                   |
+| ------------- | ------------------------------------------------------------------------- | ------------------------------------ |
+| 全局管理          | `Scripts/GameManager.cs`                                                  | 单例、跨场景持久化对象注册                        |
+| 输入            | `Scripts/MobileScript/`                                                   | PC / 移动端统一输入抽象                       |
+| 玩家            | `Scripts/Player/`                                                         | 移动、近战、弓箭、血量、属性、经验、死亡复活               |
+| 敌人            | `Scripts/Enemy/`                                                          | 状态机 AI（待机/追击/攻击/击退）、血量、硬直            |
+| 诗词            | `Scripts/PoemScripts/`                                                    | 诗词数据、AI 释义与配图、多通道容错、内容缓存、来源角标、语音背诵考官 |
+| **AI 助手**     | `Scripts/Assistant/`                                                      | 立绘与动画、指令化对话协议、语音识别、语音合成、百度 token 共用  |
+| **UI 工具链**    | `Scripts/UI/`                                                             | 代码化 UI 工厂、全局样式、菜单界面预制体、安全区适配         |
+| **存档系统**      | `Scripts/Save/`                                                           | 三档位 JSON 存档、世界状态、技能与考核进度持久化          |
+| 语音            | `Scripts/Voice/`                                                          | 录音、ASR 请求、语音交互 UI                    |
+| 对话            | `Scripts/NPCScript/`                                                      | NPC 状态机（巡逻/游走/交谈）、对话系统、历史记录          |
+| 任务            | `Scripts/QuestSystem/`                                                    | 任务管理、任务日志 UI、任务板                     |
+| 背包商店          | `Scripts/Inventory&Shop/`                                                 | 背包、物品、掉落、使用、商店与物品信息面板                |
+| 技能树           | `Scripts/SkillTree/`                                                      | 技能数据、技能槽、前置解锁与加点结算                   |
+| UI            | `Scripts/UIScripts/`                                                      | 菜单管理、统一暂停控制                          |
+| 相机 / 地形 / 切场景 | `Scripts/CameraScripts/`、`Scripts/TilemapScripts/`、`Scripts/SceneChange/` | 2D 相机边界、高低差碰撞切换、场景过渡                 |
+| 拼音工具          | `Scripts/Plugins/NPinyin/`                                                | 汉字转拼音（第三方库）                          |
 
 ### 目录结构
 
@@ -339,13 +379,13 @@ cp Assets/Resources/api_keys.example.json Assets/Resources/api_keys.json
 
 也可以改用环境变量（便于 CI 或本地多环境切换）：
 
-| 环境变量 | 对应密钥 |
-| --- | --- |
-| `POEMTEST_DEEPSEEK_KEY` | DeepSeek 官方（文本释义 + 助手） |
-| `POEMTEST_QWEN_TEXT_KEY` | 通义千问文本生成（备用通道） |
-| `POEMTEST_QWEN_IMAGE_KEY` | 通义万相文生图 |
-| `POEMTEST_BAIDU_API_KEY` | 百度语音 API Key |
-| `POEMTEST_BAIDU_SECRET_KEY` | 百度语音 Secret Key |
+| 环境变量                        | 对应密钥                   |
+| --------------------------- | ---------------------- |
+| `POEMTEST_DEEPSEEK_KEY`     | DeepSeek 官方（文本释义 + 助手） |
+| `POEMTEST_QWEN_TEXT_KEY`    | 通义千问文本生成（备用通道）         |
+| `POEMTEST_QWEN_IMAGE_KEY`   | 通义万相文生图                |
+| `POEMTEST_BAIDU_API_KEY`    | 百度语音 API Key           |
+| `POEMTEST_BAIDU_SECRET_KEY` | 百度语音 Secret Key        |
 
 > `Assets/Resources/api_keys.json` 已加入 `.gitignore`，不会被提交。
 > 读取逻辑见 `Assets/Scripts/Config/ApiKeyConfig.cs`。
@@ -362,27 +402,27 @@ cp Assets/Resources/api_keys.example.json Assets/Resources/api_keys.json
 
 菜单栏 `Tools → 诗词数据`：
 
-| 菜单 | 作用 |
-| --- | --- |
-| `0. 创建 UI 设置资源` | 生成 `UIStyleSettings.asset`，自动挑选中文字体与助手形象 |
-| `1. 填充资源 ID` | 给所有 ScriptableObject 按文件名填充稳定 ID |
-| `2. 构建索引` | 生成 `GameDatabase.asset`（ID → 资源 反查） |
-| `3. 检查重复` | 检测 ID 冲突 |
-| `导出 ID 一览表` | 输出 ID 清单，便于排查 |
-| `4. 回填内置内容` | 把 `_PoemContentSource/` 的文本与图片写入 `PoemSO` |
-| `6. 给 AI 助手挑一张形象图` | 从项目里挑选助手立绘 |
-| `7. 给 AI 助手载入序列帧` | 从精灵表载入待机动画帧 |
-| `8. 生成菜单界面预制体` | 生成 `Resources/GameMenuCanvas.prefab`（覆盖前**自动备份**到 `Backups/`） |
-| `9. 配置菜单界面贴图` | 自动填入横幅、按钮、封面等贴图 |
+| 菜单                 | 作用                                                            |
+| ------------------ | ------------------------------------------------------------- |
+| `0. 创建 UI 设置资源`    | 生成 `UIStyleSettings.asset`，自动挑选中文字体与助手形象                      |
+| `1. 填充资源 ID`       | 给所有 ScriptableObject 按文件名填充稳定 ID                              |
+| `2. 构建索引`          | 生成 `GameDatabase.asset`（ID → 资源 反查）                           |
+| `3. 检查重复`          | 检测 ID 冲突                                                      |
+| `导出 ID 一览表`        | 输出 ID 清单，便于排查                                                 |
+| `4. 回填内置内容`        | 把 `_PoemContentSource/` 的文本与图片写入 `PoemSO`                     |
+| `6. 给 AI 助手挑一张形象图` | 从项目里挑选助手立绘                                                    |
+| `7. 给 AI 助手载入序列帧`  | 从精灵表载入待机动画帧                                                   |
+| `8. 生成菜单界面预制体`     | 生成 `Resources/GameMenuCanvas.prefab`（覆盖前**自动备份**到 `Backups/`） |
+| `9. 配置菜单界面贴图`      | 自动填入横幅、按钮、封面等贴图                                               |
 
 ### 界面在哪里调
 
-| 想调什么 | 去哪 |
-| --- | --- |
-| 菜单位置 / 尺寸 | `Assets/Resources/GameMenuCanvas.prefab`（双击进预制体编辑，代码不会覆盖布局） |
-| 颜色 / 字体 / 贴图 / 布局数值 | `Assets/Resources/UIStyleSettings.asset`（Inspector） |
-| AI 助手外观与模型 | `UIStyleSettings.asset` → 「AI 助手」分组 |
-| 菜单文案 | `Assets/Scripts/UI/GameMenuUI.cs` |
+| 想调什么                | 去哪                                                          |
+| ------------------- | ----------------------------------------------------------- |
+| 菜单位置 / 尺寸           | `Assets/Resources/GameMenuCanvas.prefab`（双击进预制体编辑，代码不会覆盖布局） |
+| 颜色 / 字体 / 贴图 / 布局数值 | `Assets/Resources/UIStyleSettings.asset`（Inspector）         |
+| AI 助手外观与模型          | `UIStyleSettings.asset` → 「AI 助手」分组                         |
+| 菜单文案                | `Assets/Scripts/UI/GameMenuUI.cs`                           |
 
 ---
 
@@ -487,14 +527,14 @@ git grep -nE "sk-[A-Za-z0-9]{16,}"
 
 代码部分请以仓库根目录的授权说明为准。
 
-| 资源 | 位置 | 许可 |
-| --- | --- | --- |
-| NPinyin（汉字转拼音） | `Assets/Scripts/Plugins/NPinyin/` | 详见原项目声明 |
-| Tiny Speech Indicators（@rehhouari / @pigeonivy） | `Assets/Sprites/UI/Tiny/` | CC0 |
-| TextMesh Pro | `Assets/TextMesh Pro/` | Unity Companion License |
-| Cinemachine | `Packages/manifest.json` | Unity Companion License |
-| 字体 `zpix SDF`、`unifont-17.0` | `Assets/Sprites/Fonts/` | 发布前请核实各自授权 |
-| 其余像素素材 | `Assets/Sprites/` | 发布前请确认来源与授权 |
+| 资源                                              | 位置                                | 许可                      |
+| ----------------------------------------------- | --------------------------------- | ----------------------- |
+| NPinyin（汉字转拼音）                                  | `Assets/Scripts/Plugins/NPinyin/` | 详见原项目声明                 |
+| Tiny Speech Indicators（@rehhouari / @pigeonivy） | `Assets/Sprites/UI/Tiny/`         | CC0                     |
+| TextMesh Pro                                    | `Assets/TextMesh Pro/`            | Unity Companion License |
+| Cinemachine                                     | `Packages/manifest.json`          | Unity Companion License |
+| 字体 `zpix SDF`、`unifont-17.0`                    | `Assets/Sprites/Fonts/`           | 发布前请核实各自授权              |
+| 其余像素素材                                          | `Assets/Sprites/`                 | 发布前请确认来源与授权             |
 
 > 如需商用，请逐一核实上述素材的授权范围。
 
