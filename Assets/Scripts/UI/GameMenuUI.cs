@@ -546,12 +546,21 @@ public class GameMenuUI : MonoBehaviour
             RectTransform coverRect = UIFactory.CreateFullScreen("Cover", titleRoot.transform);
             coverRect.SetAsFirstSibling();
 
+            // 铺满整屏。用 AspectFill 等比放大后裁切，
+            // 避免 16:9 的封面在 20:9 手机上被横向拉宽变形。
+            coverRect.anchorMin = Vector2.zero;
+            coverRect.anchorMax = Vector2.one;
+            coverRect.offsetMin = Vector2.zero;
+            coverRect.offsetMax = Vector2.zero;
+
             var coverImage = UIFactory.EnsureComponent<Image>(coverRect.gameObject);
             coverImage.sprite = cover;
             coverImage.type = Image.Type.Simple;
-            coverImage.preserveAspect = false; // 铺满整屏
+            coverImage.preserveAspect = false;
             coverImage.color = Color.white;
             coverImage.raycastTarget = false;
+
+            UIFactory.EnsureComponent<AspectFill>(coverRect.gameObject);
         }
 
         // ② 遮罩：有封面时压暗一点，让文字读得清

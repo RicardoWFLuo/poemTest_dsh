@@ -24,6 +24,9 @@ MonoBehaviour:
   menuButtonSize: {x: 200, y: 88}
   menuButtonMargin: {x: 28, y: 28}
   menuButtonCorner: 0
+  enablePillarbox: 1
+  pillarboxAspect: {x: 16, y: 9}
+  pillarboxUseSafeArea: 1
   menuCover: {fileID: 21300000, guid: 20ba4298f37b4dd469f86ea1b09b6660, type: 3}
   dimCover: 1
   menuTitleBanner: {fileID: 21300000, guid: 564ec7f983214a149b029c7b3aa344a1, type: 3}

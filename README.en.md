@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="Screenshots/icon.png" width="150" alt="Poem Adventure">
+</p>
+
 # Poem Adventure · PoemTest
 
 > A Unity project that turns **learning classical Chinese poetry** into a **2D pixel-art RPG**:
@@ -65,6 +69,16 @@ so it can be demoed reliably on a real device.
     <td><img src="Screenshots/TaskTable.png"><br><sub><b>Quest board</b> · accept / abandon / hand in</sub></td>
   </tr>
 </table>
+
+### 📱 On a real phone
+
+<p align="center">
+  <img src="Screenshots/MobilePlay.jpg" width="820" alt="Running on a phone">
+</p>
+
+<p align="center">
+  <sub>Running on a OnePlus Ace 2 (2772 × 1240, 20:9) · reference resolution 1920×1080; the virtual joystick and touch buttons are enabled automatically by <code>MobileInputManager</code></sub>
+</p>
 
 ---
 

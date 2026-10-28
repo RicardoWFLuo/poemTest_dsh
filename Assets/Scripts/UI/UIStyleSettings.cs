@@ -45,6 +45,19 @@ public class UIStyleSettings : ScriptableObject
     [Tooltip("按钮放在哪个角。如果和现有移动端按键重叠，换一个角即可。")]
     public MenuButtonCorner menuButtonCorner = MenuButtonCorner.TopRight;
 
+    [Header("屏幕适配")]
+    [Tooltip("两侧黑边（Pillarbox）。\n" +
+             "开启后游戏画面被限制在固定比例区域内，多出来的部分填黑边。\n" +
+             "好处：所有 UI 位置与设计稿完全一致，虚拟摇杆不会和按钮重叠。\n" +
+             "游戏内按 F10 可实时开关，方便对比。")]
+    public bool enablePillarbox = false;
+
+    [Tooltip("黑边模式的目标宽高比，16:9 填 (16, 9)。")]
+    public Vector2 pillarboxAspect = new Vector2(16f, 9f);
+
+    [Tooltip("黑边区域是否再避开刘海/挖孔（推荐开启）。")]
+    public bool pillarboxUseSafeArea = true;
+
     [Header("菜单界面贴图")]
     [Tooltip("开局标题界面的全屏封面（例如 Resources/tt.png）。留空则自动尝试 Resources/tt。")]
     public Sprite menuCover;

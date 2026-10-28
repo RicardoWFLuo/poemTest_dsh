@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="Screenshots/icon.png" width="150" alt="诗词冒险">
+</p>
+
 # 诗词冒险 · PoemTest
 
 > 一个把**古诗词学习**做进 **2D 像素 RPG** 的 Unity 项目：
@@ -51,6 +55,16 @@
     <td><img src="Screenshots/TaskTable.png"><br><sub><b>任务板</b> · 接受 / 放弃 / 交付</sub></td>
   </tr>
 </table>
+
+### 📱 手机实机运行
+
+<p align="center">
+  <img src="Screenshots/MobilePlay.jpg" width="820" alt="手机实机运行">
+</p>
+
+<p align="center">
+  <sub>OnePlus Ace 2（2772 × 1240，20:9）实机运行 · 参考分辨率 1920×1080，虚拟摇杆与触摸按钮由 <code>MobileInputManager</code> 自动启用</sub>
+</p>
 
 ---
 
