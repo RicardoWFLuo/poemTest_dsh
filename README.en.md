@@ -502,16 +502,17 @@ scripts as GBK.
 
 For licensing of the code, please refer to the licence statement in the repository root.
 
-| Asset | Location | Licence |
+| Asset | Location | Source & licence |
 | --- | --- | --- |
-| NPinyin (hanzi to pinyin) | `Assets/Scripts/Plugins/NPinyin/` | See the original project |
-| Tiny Speech Indicators (@rehhouari / @pigeonivy) | `Assets/Sprites/UI/Tiny/` | CC0 |
+| **Pixel art** | `Assets/Sprites/` | [Tiny Swords](https://pixelfrog-assets.itch.io/tiny-swords) by Pixel Frog · free to use in games; the asset files themselves may not be resold |
+| **Chinese font** | `Assets/Sprites/Fonts/` | [GNU Unifont](https://unifoundry.com/unifont/) · GPL v2+ (with font embedding exception) |
+| **Pixel font** | `Assets/Sprites/Fonts/` | [Zpix](https://github.com/SolidZORO/zpix-pixel-font) by SolidZORO |
+| **UI sounds** | `Assets/Sprites/UI/Tiny/` | Tiny Speech Indicators ([@rehhouari](https://github.com/rehhouari) / @pigeonivy) · CC0 |
+| **Pinyin library** | `Assets/Scripts/Plugins/NPinyin/` | NPinyin (hanzi → pinyin) · see the original project |
 | TextMesh Pro | `Assets/TextMesh Pro/` | Unity Companion License |
 | Cinemachine | `Packages/manifest.json` | Unity Companion License |
-| Fonts `zpix SDF`, `unifont-17.0` | `Assets/Sprites/Fonts/` | Verify each licence before release |
-| Remaining pixel art | `Assets/Sprites/` | Verify origin and licence before release |
 
-> If you intend to use this commercially, please verify the licence of every asset listed above.
+> Thanks to the authors of the assets and libraries above. For commercial use, please refer to the official licence terms of each project.
 
 ---
 

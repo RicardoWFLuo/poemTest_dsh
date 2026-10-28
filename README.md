@@ -485,16 +485,17 @@ cp Assets/Resources/api_keys.example.json Assets/Resources/api_keys.json
 
 代码部分请以仓库根目录的授权说明为准。
 
-| 资源                                              | 位置                                | 许可                      |
-| ----------------------------------------------- | --------------------------------- | ----------------------- |
-| NPinyin（汉字转拼音）                                  | `Assets/Scripts/Plugins/NPinyin/` | 详见原项目声明                 |
-| Tiny Speech Indicators（@rehhouari / @pigeonivy） | `Assets/Sprites/UI/Tiny/`         | CC0                     |
-| TextMesh Pro                                    | `Assets/TextMesh Pro/`            | Unity Companion License |
-| Cinemachine                                     | `Packages/manifest.json`          | Unity Companion License |
-| 字体 `zpix SDF`、`unifont-17.0`                    | `Assets/Sprites/Fonts/`           | 发布前请核实各自授权              |
-| 其余像素素材                                          | `Assets/Sprites/`                 | 发布前请确认来源与授权             |
+| 资源 | 位置 | 来源与许可 |
+| --- | --- | --- |
+| **像素美术** | `Assets/Sprites/` | [Tiny Swords](https://pixelfrog-assets.itch.io/tiny-swords) by Pixel Frog · 可用于游戏作品，素材本身不可转售 |
+| **中文字体** | `Assets/Sprites/Fonts/` | [GNU Unifont](https://unifoundry.com/unifont/) · GPL v2+（含字体嵌入例外） |
+| **像素字体** | `Assets/Sprites/Fonts/` | [Zpix](https://github.com/SolidZORO/zpix-pixel-font) by SolidZORO |
+| **音效图标** | `Assets/Sprites/UI/Tiny/` | Tiny Speech Indicators（[@rehhouari](https://github.com/rehhouari) / @pigeonivy）· CC0 |
+| **拼音库** | `Assets/Scripts/Plugins/NPinyin/` | NPinyin（汉字转拼音）· 详见原项目声明 |
+| TextMesh Pro | `Assets/TextMesh Pro/` | Unity Companion License |
+| Cinemachine | `Packages/manifest.json` | Unity Companion License |
 
-> 如需商用，请逐一核实上述素材的授权范围。
+> 感谢以上素材与开源库的作者。若需商用，请以各项目官方页面上的授权条款为准。
 
 ---
 
