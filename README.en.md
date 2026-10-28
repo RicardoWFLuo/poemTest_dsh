@@ -7,7 +7,7 @@
 
 ---
 
-#### ==**Important: this project is a demo, not a fully playable game. Its AI features require you to configure several API keys yourself after downloading.**==
+> ⚠️ **Important: this project is a demo, not a fully playable game. Its AI features require you to configure several API keys yourself after downloading.**
 
 ---
 
