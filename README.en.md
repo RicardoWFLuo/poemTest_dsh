@@ -1,9 +1,15 @@
 # Poem Adventure · PoemTest
 
 > A Unity project that turns **learning classical Chinese poetry** into a **2D pixel-art RPG**:
-> explore the world, let AI explain the poems, recite them out loud, and chat with an in-game AI companion.
+> explore the world, and let AI help you understand the poems.
 
 **Engine**: Unity 2022.3.60f1c1 (LTS) · **Language**: C# 9.0 · **Platforms**: Windows / Android · **View**: 2D top-down pixel art
+
+---
+
+#### ==**Important: this project is a demo, not a fully playable game. Its AI features require you to configure several API keys yourself after downloading.**==
+
+---
 
 > 中文文档见 [README.md](README.md)
 
@@ -448,81 +454,33 @@ work offline. Only AI explanations, AI illustrations and speech features will re
 Follow "Quick start → Configure API keys" to create `Assets/Resources/api_keys.json`, or set the matching
 environment variables and restart Unity.
 
-**Q: Is the AI expensive to run?**
+**Q: Speech recognition keeps failing?**
 
-- **Explanations and companion chat**: DeepSeek `deepseek-chat`, token-billed — a few cents for ten poems
-- **Illustrations**: Tongyi Wanxiang is billed per image (~¥0.25 each) — **the only notably costly part**
-- **Speech**: Baidu offers a free tier, then bills per call / per character
-
-To keep costs down, generate once and run `Tools → 诗词数据 → 4. Bake built-in content`. The content is then
-baked into assets and **costs nothing no matter how often you demo it**.
-
-**Q: The companion says "I have no key yet".**
-
-`deepseekKey` was not found. Check the JSON formatting in `Assets/Resources/api_keys.json`, or set the
-`POEMTEST_DEEPSEEK_KEY` environment variable and restart Unity.
-
-**Q: Speech recognition or playback does nothing.**
-
-Check, in order: microphone permission → `baiduApiKey` / `baiduSecretKey` → whether the Baidu console app has
-**both "short speech recognition" and "speech synthesis" enabled** → whether the device can reach
-`aip.baidubce.com` / `vop.baidu.com` / `tsn.baidu.com`.
-
-**Q: The text model keeps timing out.**
-
-Press `F11` in game to run the **model connectivity diagnostics**. It tests candidate models one by one and
-prints ✅ available / ⚠️ rate-limited / ❌ timeout / ❌ model not supported on that endpoint. Adjust
-`Text Model` and `Text Api Mode` on `PoemManager` accordingly.
-
-**Q: Chinese text renders as boxes.**
-
-The project uses TextMesh Pro with a Chinese font asset. If boxes appear, assign a font containing Chinese
-glyphs in `UIStyleSettings` → `Font Asset`, or re-run the editor tool `0`.
+Check, in order: whether microphone permission is granted → whether the system detects an input device →
+whether `baiduApiKey` / `baiduSecretKey` are correct → whether the device can reach `vop.baidu.com`.
+The recording sample rate is fixed at 16000 Hz, matching Baidu's requirement.
 
 **Q: The virtual joystick is missing in the editor.**
 
-That is intentional. The joystick and touch buttons are only enabled on device; the editor and PC use the
-keyboard.
+That is intentional. The joystick and touch buttons are only enabled on device (non-`UNITY_STANDALONE`
+builds); the editor and PC hide them and use the keyboard instead.
+
+**Q: Chinese text or comments render as garbled characters?**
+
+All C# scripts in the project are saved as **UTF-8 with BOM**, and `.gitignore` contains the full Unity rule
+set. If a few files still look garbled, check your editor or Git encoding settings — do not re-save the
+scripts as GBK.
 
 ---
 
-## 🗺️ Progress & roadmap
-
-**Done**
-
-- [x] **Save system**: three slots storing position, health, gold, EXP, inventory, quests, skill levels and exam progress
-- [x] **Offline-capable demo**: AI-generated poem content can be baked into built-in content, so a demo needs no network and costs nothing
-- [x] **Content source disclosure**: built-in / AI generated / cached badges
-- [x] **AI companion**: portrait, sprite animation, instruction-based dialogue, speech input, speech output
-- [x] **Mobile UI adaptation**: safe area, virtual joystick, reference-resolution scaling
-- [x] **Visual UI configuration**: menu is an editable prefab, styling centralised in `UIStyleSettings`
+## 🗺️ Roadmap
 
 **To do**
 
 - [ ] **Skill tree differentiation**: all 25 nodes currently share the same effect definitions (health / attack / speed) and need splitting by design intent
 - [ ] **Stats panel**: crit rate, defence, dodge, mana and block are still placeholders
 - [ ] **On-device mobile verification**: multi-touch joystick handling, recording sample rates and safe area need real-device testing
-- [ ] **Companion content moderation**: currently a local blocklist for demo purposes; a production build should call a server-side moderation API
-- [ ] **TTS caching**: identical text is currently synthesised repeatedly; a cache would help
-- [ ] **Asset cleanup**: remove development leftovers and drop `TextMesh Pro/Examples & Extras` from the build
 - [ ] **Content expansion**: more poems and more question types (fill-in-the-blank, matching)
-
----
-
-## 🤝 Contributing
-
-1. Fork this repository
-2. Create a `Feat_xxx` branch
-3. Commit your changes
-4. Open a Pull Request
-
-**Please self-check before committing and never commit keys:**
-
-```bash
-git grep -nE "sk-[A-Za-z0-9]{16,}"
-```
-
-Issues with bug reports or new poetry gameplay ideas are welcome too.
 
 ---
 
