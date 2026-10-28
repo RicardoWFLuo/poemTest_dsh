@@ -58,3 +58,9 @@ Backups/
 
 # ===== 素材原图备份（本地保留，不入库） =====
 tt_original_backup.png
+# ===== 个人简历（不属于项目） =====
+_resume/
+
+# ===== 临时目录 =====
+_piptmp/
+_pylibs/
