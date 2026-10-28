@@ -1,7 +1,7 @@
 # Poem Adventure · PoemTest
 
 > A Unity project that turns **learning classical Chinese poetry** into a **2D pixel-art RPG**:
-> explore the world, let AI explain the poems, then recite them out loud.
+> explore the world, let AI explain the poems, recite them out loud, and chat with an in-game AI companion.
 
 **Engine**: Unity 2022.3.60f1c1 (LTS) · **Language**: C# 9.0 · **Platforms**: Windows / Android · **View**: 2D top-down pixel art
 
@@ -11,107 +11,154 @@
 
 ## 📖 Overview
 
-*Poem Adventure* is a 2D pixel-art RPG aimed at primary-school Chinese-literature education. The player
-explores two open maps, fights and gathers, and visits **ten poet NPCs** to study ten classic poems.
+*Poem Adventure* is a 2D pixel-art RPG aimed at young learners of classical Chinese poetry. The player
+explores two open maps, fights and gathers, and visits poet NPCs to study ten classic poems.
 
-Unlike a plain flashcard app, the game wires **AI and speech recognition** into the learning loop:
+Unlike a plain flashcard app, the game wires **large language models and speech technology** into the
+learning loop:
 
-- **Want to understand a poem?** Ask in-game — Alibaba's **Qwen** returns a 200–300 character objective gloss.
-- **Want to see it?** **Wanxiang** generates a Chinese-style illustration from the poem's own prompt.
-- **Ready to be tested?** Walk up to an examiner and **say the next line out loud** — the game grades you with
-  **Baidu speech recognition plus pinyin similarity matching**.
-- **Prefer written questions?** Take a four-choice quiz instead and earn a token.
+- Want to understand a poem? Ask in-game — **DeepSeek** returns a concise 150–220 character explanation;
+- Want to see it? **Tongyi Wanxiang** generates a classical-style illustration from the poem's imagery;
+- Ready to be tested? Walk up to the examiner and **recite the next line aloud** — the game scores you with
+  **Baidu speech recognition** plus pinyin similarity matching;
+- Prefer multiple choice? Answer four-option quiz questions to earn tokens;
+- Tired of reading? The **AI companion "Red Knight"** in the bottom-right corner is always there —
+  **you can type to it, speak to it, and it will read its answers aloud**.
 
-Collected tokens are turned in at the quest board for experience and gold, and levels buy skill points on a
-24-node skill tree. Read → understand → recite → get rewarded: a complete loop with real feedback.
+Hand in enough tokens at the quest board to earn EXP and gold, level up, and spend skill points in the
+skill tree. Read → understand → recite → discuss → get rewarded: a complete, playable loop with positive
+feedback.
 
-All content is **ScriptableObject-driven** — poems, items, dialogue, quests, characters, locations and skills
-are asset files editable directly in the Inspector, so new course material can be added without touching code.
+All content is **ScriptableObject-driven** — poems, items, dialogues, quests, actors, locations and skills
+are assets editable in the Inspector, so teachers or designers can extend the curriculum without touching
+a single line of code.
+
+On top of that, the UI, saving and AI content are engineered for real use: **three save slots**,
+**local caching of AI output**, **content source badges**, and **pre-generated content that works offline** —
+so it can be demoed reliably on a real device.
+
+---
+
+## 📸 Screenshots
+
+<table>
+  <tr>
+    <td width="50%"><img src="Screenshots/HomeScreen.png"><br><sub><b>Title screen</b> · cover art, scroll banner, nine-sliced buttons</sub></td>
+    <td width="50%"><img src="Screenshots/GameScreen.png"><br><sub><b>Exploration</b> · pixel-art world and HUD</sub></td>
+  </tr>
+  <tr>
+    <td><img src="Screenshots/MenuBar.png"><br><sub><b>Bottom-left action bar</b> · Stats / Skills / Quests / Menu side by side</sub></td>
+    <td><img src="Screenshots/DialogueScreen.png"><br><sub><b>Poet dialogue</b> · portrait, text and choices</sub></td>
+  </tr>
+  <tr>
+    <td><img src="Screenshots/SaveScreen.png"><br><sub><b>Save slots</b> · three slots with time / level / gold</sub></td>
+    <td><img src="Screenshots/SkillScreen.png"><br><sub><b>Skill tree</b> · 24 nodes with prerequisites and point spending</sub></td>
+  </tr>
+  <tr>
+    <td><img src="Screenshots/ShopScreen.png"><br><sub><b>Shop</b> · tabs for consumables / weapons / armour</sub></td>
+    <td><img src="Screenshots/TaskTable.png"><br><sub><b>Quest board</b> · accept / abandon / hand in</sub></td>
+  </tr>
+</table>
 
 ---
 
 ## ✨ Features
 
-| | Feature | Notes |
-|---|---|---|
-| 📚 | **Ten classic poems** | 咏鹅, 春晓, 池上, 静夜思, 所见, 悯农, 寻隐者不遇, 登鹳雀楼, 风, 小儿垂钓 — fully data-driven |
-| 🤖 | **AI poem explanation** | Alibaba Bailian (DashScope) · Qwen `qwen-turbo`, prompted for an objective 200–300 character gloss |
-| 🎨 | **AI poem illustration** | DashScope · Wanxiang `wan2.6-t2i`, generates a 1024×576 illustration from a per-poem prompt and displays it immediately |
-| 🎤 | **Voice recitation exam** | Microphone → 16 kHz PCM → Baidu ASR → **Hanzi-to-Pinyin + edit-distance similarity** grading, so a single misheard character does not fail the player |
-| ✅ | **Multiple-choice exams** | Poetry comprehension questions (e.g. "What was the child secretly picking in *On the Pond*?"); a correct answer yields a token |
-| 📜 | **Full quest system** | Objectives track **items / locations / conversations**; includes a quest board and a quest log with accept, decline and turn-in flows |
-| 🎒 | **Inventory and shop** | Stacking, use, drop and loot; the shop has item/weapon/armour tabs with buying and selling |
-| ⚔️ | **Action combat** | Melee and bow with weapon switching, cooldowns, knockback and hit-stun, plus on-screen range gizmos |
-| 📈 | **Progression** | Experience from kills and items, multi-level level-ups, and a 24-node skill tree (attack / health / speed) |
-| 🕹️ | **Unified PC and mobile input** | One input layer: keyboard on desktop, virtual joystick and touch buttons on device |
-| 🗺️ | **Two scenes with persistent state** | Travel between maps freely; player, UI, inventory and quest progress survive the transition |
-| 💬 | **Data-driven dialogue** | Conditional lines, branching options, quiz logic and quest hooks, with `{PoemTitle}` `{Poet}` `{PoemContent}` `{SelectedLines}` placeholders that inject poem text automatically |
+|     | Feature | Description |
+| --- | --- | --- |
+| 📚 | **Ten classic poems** | 《咏鹅》《春晓》《池上》《静夜思》《所见》《悯农》《寻隐者不遇》《登鹳雀楼》《风》《小儿垂钓》 — fully data-driven and freely extendable |
+| 🤖 | **AI explanations** | Defaults to the **official DeepSeek API** (`deepseek-chat`) with a strict "objective, concise, 150–220 characters, no headings or lists" prompt; also supports both the native and OpenAI-compatible DashScope channels, switchable at runtime |
+| 🎨 | **AI illustrations** | Uses Tongyi Wanxiang `wan2.7-image-pro` to generate a 1024×576 classical-style illustration from a per-poem prompt and display it instantly |
+| 🏷️ | **Content source badges** | Every piece of content is labelled `Built-in` / `AI generated` / `AI generated · cached` — both informative and a required explicit disclosure for AI-generated content |
+| 💾 | **Content cache & offline fallback** | Generated text and images are persisted and reused, so **each poem is only paid for once**; after baking into built-in content the game runs fully offline |
+| 🎤 | **Voice recitation exam** | Microphone → 16 kHz PCM → Baidu short-speech recognition → **hanzi-to-pinyin + edit-distance similarity** scoring, so a few misrecognised characters do not immediately fail the player |
+| ✅ | **Multiple-choice exam** | Four-option poetry knowledge questions; a correct answer grants a token |
+| 🧙 | **AI companion "Red Knight"** | Persistent portrait in the corner supporting **typed questions, spoken questions and spoken answers**; emits structured JSON that drives character animations, with a sprite-sheet idle loop |
+| 🗒️ | **Three save slots** | Reachable from the title screen, the `Esc` menu and the slot list; stores position, health, gold, EXP, inventory, quests, **skill levels and spent points**, and passed exams; `F5` quick-save, `F9` quick-load |
+| 📜 | **Quest system** | Objectives can be item-, location- or dialogue-based; includes a quest board, quest log and accept / abandon / hand-in flows |
+| 🎒 | **Inventory & shop** | Stacking, using, dropping and looting items; a shop with consumable / weapon / armour tabs, buying and selling |
+| ⚔️ | **Action combat** | Melee slashing and bow shooting, weapon switching, cooldowns, knockback and stun, visualised hit ranges |
+| 📈 | **Progression** | EXP from kills and pickups, multi-level-ups, a 24-node skill tree (attack / health / speed) |
+| 🕹️ | **Unified PC & mobile input** | One set of key bindings: keyboard in the editor and on PC, virtual joystick and touch buttons on device; the whole UI is safe-area aware |
+| 🗺️ | **Two scenes with persistent state** | Travel freely between two maps; player, UI, inventory and quest progress persist across scenes |
+| 💬 | **Data-driven dialogue** | Unlock conditions, branching choices, Q&A checks and quest hooks; lines can embed `{PoemTitle}` `{Poet}` `{PoemContent}` `{SelectedLines}` placeholders |
+| 🎛️ | **Visual UI configuration** | The menu UI is a prefab you can edit directly in Unity; styling, sprites, colours and layout values live in a `UIStyleSettings` asset |
 
 ---
 
-## 🎮 Gameplay and content
+## 🎮 Gameplay & Content
 
-### Loop
+### Game loop
 
 ```
         ┌───────────────── Explore ─────────────────┐
-        │  combat · gather mushrooms/steaks · collect gold and EXP  │
+        │  Fight · gather mushrooms/meat · loot gold & EXP
         └────────────────────┬──────────────────────┘
                              │
       ┌──────────────────────┼───────────────────────┐
       ▼                      ▼                       ▼
-  Poet NPCs             Examiner NPCs            Coloured NPCs
-  (10)                  (10)                     (blue / yellow / purple)
+   Poet NPCs              Examiner NPCs          Coloured NPCs
+   (10)                   (10)                   (blue / yellow / purple)
       │                      │                       │
-  poem dialogue        voice recitation        quest dialogue
-      │                (say the next line)      (tutorial chain)
-      ├─► Explanation: AI-generated gloss            │
-      │                                    correct answer → "Bone"
-      └─► Illustration: AI-generated art             │
+  Poetry dialogue        Voice recitation       Quest dialogue
+      │                  (say the next line)     (starter quest chain)
+      ├─► Explanation: AI-generated text              │
+      │                                        Correct answer → "bone"
+      └─► Illustration: AI-generated art               │
                              │                      │
-                        pass → "Pumpkin"            │
+                    Pass → "pumpkin"                 │
                              └───────────┬──────────┘
                                          ▼
-                        Quest board turn-in (10 Bones / 10 Pumpkins)
+                        Hand in at the quest board (10 bones / 10 pumpkins)
                                          ▼
-                            Reward: 100 EXP + 50 Gold
+                              Reward: 100 EXP + 50 gold
                                          ▼
-                            Level up → skill points → 24-node tree
+                     Level up → skill points → 24-node skill tree
 ```
 
-### The ten poems
+### AI illustrations
 
-| # | Title | Author |
-| :---: | --- | --- |
-| 1 | 咏鹅 *Ode to the Goose* | 骆宾王 Luo Binwang |
-| 2 | 春晓 *Spring Dawn* | 孟浩然 Meng Haoran |
-| 3 | 池上 *On the Pond* | 白居易 Bai Juyi |
-| 4 | 静夜思 *Quiet Night Thought* | 李白 Li Bai |
-| 5 | 所见 *What I Saw* | 袁枚 Yuan Mei |
-| 6 | 悯农（其二）*Sympathy for the Peasants II* | 李绅 Li Shen |
-| 7 | 寻隐者不遇 *Seeking the Hermit in Vain* | 贾岛 Jia Dao |
-| 8 | 登鹳雀楼 *On the Stork Tower* | 王之涣 Wang Zhihuan |
-| 9 | 风 *The Wind* | 李峤 Li Qiao |
-| 10 | 小儿垂钓 *A Child Fishing* | 胡令能 Hu Lingneng |
+<p align="center">
+  <img src="Screenshots/PoemPicture.png" width="720">
+</p>
+
+<p align="center">
+  <sub>AI-generated illustration for 《咏鹅》 · the <code>AI generated · cached</code> badges in the corners are the content-source disclosure</sub>
+</p>
+
+### Included poems
+
+| # | Title | Author | Famous line |
+| :---: | --- | --- | --- |
+| 1 | 咏鹅 | 骆宾王 | 白毛浮绿水，红掌拨清波。 |
+| 2 | 春晓 | 孟浩然 | 夜来风雨声，花落知多少。 |
+| 3 | 池上 | 白居易 | 不解藏踪迹，浮萍一道开。 |
+| 4 | 静夜思 | 李白 | 举头望明月，低头思故乡。 |
+| 5 | 所见 | 袁枚 | 意欲捕鸣蝉，忽然闭口立。 |
+| 6 | 悯农（其二） | 李绅 | 谁知盘中餐，粒粒皆辛苦。 |
+| 7 | 寻隐者不遇 | 贾岛 | 只在此山中，云深不知处。 |
+| 8 | 登鹳雀楼 | 王之涣 | 欲穷千里目，更上一层楼。 |
+| 9 | 风 | 李峤 | 过江千尺浪，入竹万竿斜。 |
+| 10 | 小儿垂钓 | 胡令能 | 路人借问遥招手，怕得鱼惊不应人。 |
 
 ### NPCs and quests
 
 | Character | Role |
 | --- | --- |
-| Poet NPCs × 10 | One per poem; entry point for dialogue, AI explanation and AI illustration |
-| Examiner NPCs × 10 | Voice recitation exam; passing awards 1 Pumpkin |
-| Purple NPC | Quiz examiner; a correct answer awards 1 Bone |
-| Blue NPC | Gives and receives Tutorial Quest I |
-| Yellow NPC | Talk target of Tutorial Quest III |
+| Poet NPC × 10 | One per poem; provides dialogue plus AI explanation and illustration entry points |
+| Examiner NPC × 10 | Voice recitation exam; passing grants 1 "pumpkin" |
+| Purple NPC | Multiple-choice examiner; a correct answer grants 1 "bone" |
+| Blue NPC | Gives and receives starter quest #1 |
+| Yellow NPC | Conversation target of starter quest #3 |
 | Knight | Combat target |
 
-| Quest | Level | Objectives | Rewards |
+| Quest | Level | Objective | Reward |
 | --- | :---: | --- | --- |
-| Tutorial I | 1 | Reach the hills + gather 3 mushrooms + return to the Blue NPC | 10 EXP, 10 Gold, 3 Mushrooms |
-| Tutorial II | 1 | Collect 2 steaks | 10 EXP, 10 Gold |
-| Tutorial III | 1 | Talk to the Yellow NPC | — |
-| Poem Exam | 10 | Accumulate 10 Bones from quizzes | 100 EXP, 50 Gold |
-| Recitation Exam | 10 | Accumulate 10 Pumpkins from voice exams | 100 EXP, 50 Gold |
+| Starter quest #1 | 1 | Reach the hill + gather 3 mushrooms + return to the blue NPC | 10 EXP, 10 gold, 3 mushrooms |
+| Starter quest #2 | 1 | Collect 2 pieces of meat | 10 EXP, 10 gold |
+| Starter quest #3 | 1 | Talk to the yellow NPC | — |
+| Poetry exam | 10 | Collect 10 bones from the quiz | 100 EXP, 50 gold |
+| Recitation exam | 10 | Collect 10 pumpkins from recitations | 100 EXP, 50 gold |
 
 ### Controls
 
@@ -120,72 +167,126 @@ are asset files editable directly in the Inspector, so new course material can b
 | `W A S D` / arrows | Move | `Q` | Stats panel |
 | `J` | Melee attack | `E` | Skill tree |
 | `K` | Shoot arrow | `Z` | Start / stop recording |
-| `V` | Switch melee / bow | `1` `2` `3` | Use item (sell in a shop) |
-| `F` | Interact (dialogue, exam, explanation, illustration, shop, quest board) | `4` `5` `6` | Drop item |
+| `V` | Switch melee / bow | `1` `2` `3` | Use item (sell inside the shop) |
+| `F` | Interact (dialogue / exam / explanation / illustration / shop / quest board) | `4` `5` `6` | Drop item |
+| `Tab` | Open / close the AI companion | `Esc` | Game menu (resume / save / load / title) |
+| `F5` | Quick save | `F9` | Quick load |
+| `F11` | Model connectivity diagnostics (AI troubleshooting) | — | — |
 
-> No code changes are needed for mobile: `MobileInputManager` enables the virtual joystick and touch buttons
-> on device and hides them on desktop/editor, switching to keyboard input automatically.
+> No code changes are needed for mobile: `MobileInputManager` automatically enables the virtual joystick
+> and touch buttons on device, and hides them in the editor and on PC in favour of the keyboard.
 
 ---
 
-## 🖼️ Art preview
+## 🧙 AI Companion "Red Knight"
 
-The game uses 2D pixel art. A few assets actually used in the project:
+A portrait character permanently anchored in the bottom-right corner — the most AI-dense part of the project.
 
-**Buildings and scenery**
+### Appearance
+
+<p align="center">
+  <img src="Screenshots/AIAssistant.png" width="320">
+</p>
+
+<p align="center">
+  <sub>The Red Knight · upper-body crop plus the remaining question counter</sub>
+</p>
+
+- **Portrait frame**: shows the character's upper body, cropped with `RectMask2D`, sized to match the dialogue system's NPC portrait
+- **Sprite-sheet animation**: frame-by-frame idle loop
+- **Typewriter bubble**: answers are revealed character by character
+
+### Instruction-based protocol
+
+Rather than letting the model free-form, it must answer with structured JSON:
+
+```json
+{ "say": "白毛浮绿水，说的是鹅的羽毛浮在水面上。", "action": "nod" }
+```
+
+- The persona is a seasoned, well-read **"Red Knight" senior**, speaking like a mentor, in under 40 characters per reply
+
+### Asking by voice
+
+- Unity `Microphone` recording → **runtime resampling** to 16 kHz / 16 bit / mono
+- Leading and trailing silence is trimmed; clips that are too short are rejected so no request is wasted
+- Uses Baidu short-speech recognition; the transcript is placed into the input field and submitted
+- Error codes are translated into human-readable Chinese (bad audio quality / quota exhausted / too short, …)
+
+### Hearing it speak
+
+- Uses Baidu text-to-speech, which returns audio in a single request — no task polling
+- Shares one cached `access_token` with speech recognition (`BaiduAuth`)
+- A "Read aloud / Mute" toggle is provided; a TTS failure only logs and **never interrupts the text conversation**
+
+### Mutual exclusion with other UI
+
+When dialogue, the poem panels, exams, the skill tree, the stats panel, the shop or the main menu are open,
+the companion **automatically hides** and returns afterwards.
+
+> Most of those panels toggle via `CanvasGroup.alpha` rather than deactivation, so the check uses
+> `alpha > 0.5` instead of `activeSelf`.
+
+---
+
+## 🖼️ Asset preview
+
+The game uses 2D pixel art; below are some of the assets actually used in the repository.
+
+**Buildings & scenery**
 
 | | | | |
 | :---: | :---: | :---: | :---: |
 | ![Castle](Assets/Sprites/Resource/Building/Castle.png) | ![Monastery](Assets/Sprites/Resource/Building/Monastery.png) | ![Tower](Assets/Sprites/Resource/Building/Tower.png) | ![House](Assets/Sprites/Resource/Building/House_Red.png) |
 | Castle | Monastery | Tower | House |
 
-**Combat and item icons**
+**Combat & item icons**
 
 | | | | |
 | :---: | :---: | :---: | :---: |
-| ![Health](Assets/Sprites/Icons/Combat/Heart.png) | ![Attack](Assets/Sprites/Icons/Combat/Attack.png) | ![Speed](Assets/Sprites/Icons/Combat/Speed.png) | ![Poem item](Assets/Sprites/Resource/3ItemAboutPoems/ItemExplain.png) |
-| Health | Attack | Speed | Poem explanation item |
+| ![Health](Assets/Sprites/Icons/Combat/Heart.png) | ![Attack](Assets/Sprites/Icons/Combat/Attack.png) | ![Speed](Assets/Sprites/Icons/Combat/Speed.png) | ![Poem](Assets/Sprites/Resource/3ItemAboutPoems/ItemExplain.png) |
+| Health | Attack | Speed | Poem appraiser item |
 
-**Character sprite sheets**
+**Character sprites (sprite sheets)**
 
 | | | |
 | :---: | :---: | :---: |
-| ![Poet NPC](Assets/Sprites/Resource/NPC/Pawn_Purple.png) | ![Examiner NPC](Assets/Sprites/Resource/NPC/Pawn_Red.png) | ![Archer](Assets/Sprites/Player/Archer_Blue.png) |
-| Poet NPC | Examiner NPC | Archer (player) |
+| ![Poet NPC](Assets/Sprites/Resource/NPC/Pawn_Purple.png) | ![Red Knight](Assets/Sprites/Resource/NPC/Warrior_Red.png) | ![Archer](Assets/Sprites/Player/Archer_Blue.png) |
+| Poet NPC | Red Knight (AI companion) | Archer (player) |
 
-> More art lives under `Assets/Sprites/` (terrain, water, trees, houses, 9-slice UI, fonts, icons).
+> More art lives in `Assets/Sprites/` (terrain, water, trees, buildings, nine-sliced UI, fonts, icons…).
 
 ---
 
 ## 🛠️ Technical architecture
 
-### Environment
+### Environment and dependencies
 
 | Item | Version |
 | --- | --- |
-| Unity | 2022.3.60f1c1 (LTS; other 2022.3.x releases work) |
+| Unity | 2022.3.60f1c1 (LTS; other 2022.3.x should work) |
 | C# | 9.0 (.NET Standard 2.1) |
-| Cinemachine | 2.10.7 (2D camera confiner) |
-| TextMesh Pro | 3.0.9 (UI text and Chinese fonts) |
+| Cinemachine | 2.10.7 (2D camera bounds) |
+| TextMesh Pro | 3.0.9 (UI text and Chinese font) |
 | 2D Feature Set | 2.0.1 (Tilemap / 2D sprites) |
-| Input | Legacy Input Manager (the Input System package is not used) |
+| Input | Legacy Input Manager (Input System package not used) |
 | Resolution | 1920 × 1080 |
 
 ### Data-driven: everything is a ScriptableObject
 
 | Asset type | Purpose |
 | --- | --- |
-| `PoemSO` | Poem: title, author, text, AI explanation prompt, AI illustration prompt |
-| `ItemSO` | Item: name, icon, stack size, stat bonuses, consumable flag |
-| `ActorSO` | Character: name, portrait |
-| `DialogueSO` | Dialogue node: lines, options, quiz logic, quest hooks, display conditions |
-| `QuestSO` | Quest: objectives (item / location / conversation), rewards |
-| `LocationSO` | Location: id, display name |
+| `PoemSO` | Poem: title, author, body, AI explanation prompt, AI illustration prompt |
+| `ItemSO` | Item: name, icon, stack limit, stat bonuses, consumable flag |
+| `ActorSO` | Actor: name, portrait |
+| `DialogueSO` | Dialogue node: lines, choices, Q&A checks, quest hooks, display conditions |
+| `QuestSO` | Quest: objectives (item / location / dialogue) and rewards |
+| `LocationSO` | Location: ID and display name |
 | `SkillSO` | Skill: name, max level, per-level increment, icon |
 
-### Event-driven: no hard references between systems
+### Event-driven: systems stay decoupled
 
-| Event | Publisher | Subscribers |
+| Event | Publisher | Subscriber |
 | --- | --- | --- |
 | `QuestEvents.OnQuestOfferRequested` / `OnQuestTurnInRequested` | `DialogueManager`, `QuestBoard` | `QuestLogUI` |
 | `QuestEvents.OnQuestAccepted` | `QuestLogUI` | `NPCTalk`, `PoemTalk` |
@@ -196,68 +297,78 @@ The game uses 2D pixel art. A few assets actually used in the project:
 | `ShopKeeper.OnShopStateChanged` | `ShopKeeper` | `InventorySlot` |
 | `SkillSlot.OnAbilityPointSpent` / `OnSkillMaxed` | `SkillSlot` | `SkillManager`, `SkillTreeManager` |
 
-### Main modules
+### Main systems
 
 | Module | Directory | Responsibility |
 | --- | --- | --- |
-| Global | `Scripts/GameManager.cs` | Singleton and cross-scene persistent object registration |
+| Global | `Scripts/GameManager.cs` | Singletons and cross-scene persistent objects |
 | Input | `Scripts/MobileScript/` | Unified PC / mobile input abstraction |
 | Player | `Scripts/Player/` | Movement, melee, bow, health, stats, EXP, death and respawn |
-| Enemy | `Scripts/Enemy/` | State-machine AI (idle / chase / attack / knockback), health, hit-stun |
-| Poetry | `Scripts/PoemScripts/` | Poem data, AI explanation and illustration, recitation examiner |
+| Enemies | `Scripts/Enemy/` | State-machine AI (idle / chase / attack / knockback), health, hit-stun |
+| Poetry | `Scripts/PoemScripts/` | Poem data, AI explanation and illustration, multi-channel fallback, content cache, source badges, recitation examiner |
+| **AI companion** | `Scripts/Assistant/` | Portrait and animation, instruction-based dialogue protocol, speech recognition, text-to-speech, shared Baidu token |
+| **UI toolkit** | `Scripts/UI/` | Code-driven UI factory, global style, menu prefab, safe-area fitting |
+| **Save system** | `Scripts/Save/` | Three-slot JSON saves, world state, skill and exam persistence |
 | Voice | `Scripts/Voice/` | Recording, ASR requests, voice interaction UI |
-| Dialogue | `Scripts/NPCScript/` | NPC state machine, dialogue system, history trackers |
+| Dialogue | `Scripts/NPCScript/` | NPC state machines, dialogue system, history |
 | Quests | `Scripts/QuestSystem/` | Quest manager, quest log UI, quest board |
-| Inventory & shop | `Scripts/Inventory&Shop/` | Inventory, items, loot, item use, shop and item info panel |
-| Skill tree | `Scripts/SkillTree/` | Skill data, slots, prerequisite unlocking, point spending |
-| UI | `Scripts/UIScripts/` | Menu management, centralised pause control |
-| Camera / terrain / scenes | `Scripts/CameraScripts/`, `Scripts/TilemapScripts/`, `Scripts/SceneChange/` | 2D camera confiner, elevation collider switching, scene transitions |
-| Pinyin | `Scripts/Plugins/NPinyin/` | Hanzi to Pinyin (third party) |
+| Inventory & shop | `Scripts/Inventory&Shop/` | Inventory, items, loot, shop and item info |
+| Skill tree | `Scripts/SkillTree/` | Skill data, slots, prerequisites and point spending |
+| UI | `Scripts/UIScripts/` | Menu management, ref-counted pause control |
+| Camera / tilemap / scenes | `Scripts/CameraScripts/`, `Scripts/TilemapScripts/`, `Scripts/SceneChange/` | 2D camera bounds, height-based collision switching, scene transitions |
+| Pinyin utility | `Scripts/Plugins/NPinyin/` | Hanzi-to-pinyin (third-party) |
 
-### Project layout
+### Directory layout
 
 ```
 poemTest/
 ├── Assets/
+│   ├── Editor/                  Editor tooling (data init, content baking, menu prefab)
 │   ├── Prefabs/                 Prefabs (NPCs, player, UI, loot)
-│   ├── Resources/               api_keys.example.json template
-│   ├── Scenes/                  RPG1.unity (main) / RPG2.unity
-│   ├── Scripts/                 All game scripts (see table above)
+│   ├── Resources/
+│   │   ├── UIStyleSettings.asset    UI style, sprites and layout (Inspector-editable)
+│   │   ├── GameMenuCanvas.prefab    Menu UI prefab (editable directly in Unity)
+│   │   ├── GameDatabase.asset       Asset index
+│   │   ├── api_keys.example.json    Key template (copy to api_keys.json)
+│   │   └── tt.png                   Title screen cover
+│   ├── Scenes/                  RPG1.unity / RPG2.unity
+│   ├── Scripts/                 All gameplay scripts (see the table above)
 │   ├── Sprites/                 Art assets
+│   ├── _PoemContentSource/      AI-generated poem content (can be baked in)
 │   └── TextMesh Pro/            Bundled TMP resources
+├── Backups/                     Automatic backups before regenerating the menu prefab
 ├── Packages/manifest.json
 ├── ProjectSettings/
-├── docs/                        Development notes
 ├── README.md / README.en.md
-└── SECURITY.md
+└── SECURITY.md                  Security notes
 ```
 
 ---
 
-## 🚀 Getting started
+## 🚀 Quick start
 
 ### 1. Requirements
 
-- Unity Hub with **Unity 2022.3.60f1c1** (or another 2022.3.x)
-- 5 GB or more of free disk space (the first Library import is large)
+- Unity Hub + **Unity 2022.3.60f1c1** (or another 2022.3.x)
+- At least 5 GB of free disk space (the first `Library` import is large)
 
 ### 2. Run the project
 
 ```bash
-git clone <repository-url>
+git clone <this repository>
 cd poemTest
 ```
 
 1. Unity Hub → `Add` → select the repository root;
-2. Wait for the first asset import and package restore to finish;
+2. Wait for the first import and package restore;
 3. Open `Assets/Scenes/RPG1.unity`;
 4. Press **Play**.
 
-Both scenes are registered in `Build Settings`, so the project can be built directly.
+Both scenes are already registered in Build Settings and can be built directly.
 
-### 3. Configure API keys (needed for AI and speech features)
+### 3. Configure API keys (needed for AI and speech)
 
-For security the project ships **no keys at all** — supply your own:
+For security reasons the project **ships no keys**:
 
 ```bash
 cp Assets/Resources/api_keys.example.json Assets/Resources/api_keys.json
@@ -265,114 +376,174 @@ cp Assets/Resources/api_keys.example.json Assets/Resources/api_keys.json
 
 ```json
 {
-  "qwenTextKey": "Alibaba Bailian text-generation API key (poem explanation)",
-  "qwenImageKey": "Alibaba Bailian image-generation API key (poem illustration)",
-  "baiduApiKey": "Baidu Smart Cloud ASR API key",
-  "baiduSecretKey": "Baidu Smart Cloud ASR secret key"
+  "qwenTextKey": "DashScope text key (fallback channel, optional)",
+  "qwenImageKey": "DashScope text-to-image key (poem illustrations)",
+  "baiduApiKey": "Baidu Cloud speech API key (ASR + TTS)",
+  "baiduSecretKey": "Baidu Cloud speech secret key",
+  "deepseekKey": "Official DeepSeek API key (explanations + companion chat)"
 }
 ```
 
-Alternatively use environment variables, which is convenient for CI or switching environments:
+> Only `deepseekKey` is required for explanations and the companion; fill `qwenImageKey` for AI illustrations
+> and the two Baidu keys for speech.
+
+Environment variables are also supported:
 
 | Variable | Key |
 | --- | --- |
-| `POEMTEST_QWEN_TEXT_KEY` | Qwen text generation |
-| `POEMTEST_QWEN_IMAGE_KEY` | Wanxiang image generation |
-| `POEMTEST_BAIDU_API_KEY` | Baidu ASR API key |
-| `POEMTEST_BAIDU_SECRET_KEY` | Baidu ASR secret key |
-
-> `Assets/Resources/api_keys.json` is git-ignored.
-> The resolution logic lives in `Assets/Scripts/Config/ApiKeyConfig.cs`.
+| `POEMTEST_DEEPSEEK_KEY` | DeepSeek official (explanations + companion) |
+| `POEMTEST_QWEN_TEXT_KEY` | DashScope text generation (fallback) |
+| `POEMTEST_QWEN_IMAGE_KEY` | DashScope text-to-image |
+| `POEMTEST_BAIDU_API_KEY` | Baidu speech API key |
+| `POEMTEST_BAIDU_SECRET_KEY` | Baidu speech secret key |
 
 ### 4. Build notes
 
-- **Android**: enable microphone permission in `Player Settings` and verify recording device enumeration on a real device;
-- The speech features require network access to Baidu's ASR endpoint;
-- To shrink the build, delete `Assets/TextMesh Pro/Examples & Extras`.
+- **Android**: set the package name, switch the scripting backend to **IL2CPP**, enable **ARM64**, and verify
+  that `RECORD_AUDIO` ends up in the manifest — `Microphone` needs it;
+- Speech features require network access to `aip.baidubce.com`, `vop.baidu.com` and `tsn.baidu.com`;
+- `Assets/Resources/api_keys.json` is bundled into the APK as-is, so it can be extracted — see
+  [SECURITY.md](SECURITY.md) before distributing a build;
+- To slim the package you can delete `Assets/TextMesh Pro/Examples & Extras`.
+
+---
+
+## 🧰 Editor tools
+
+Menu bar → `Tools → 诗词数据`:
+
+| Menu | Purpose |
+| --- | --- |
+| `0. Create UI settings asset` | Generates `UIStyleSettings.asset` and picks a Chinese font and companion portrait |
+| `1. Fill asset IDs` | Assigns stable IDs to all ScriptableObjects based on file names |
+| `2. Build index` | Generates `GameDatabase.asset` (ID → asset lookup) |
+| `3. Check duplicates` | Detects ID collisions |
+| `Export ID list` | Dumps an ID listing for troubleshooting |
+| `4. Bake built-in content` | Writes `_PoemContentSource/` text and images into `PoemSO` |
+| `6. Pick an AI companion portrait` | Chooses the companion sprite from the project |
+| `7. Load companion sprite frames` | Loads idle animation frames from a sprite sheet |
+| `8. Generate menu UI prefab` | Generates `Resources/GameMenuCanvas.prefab` (**overwrites**, with automatic backup to `Backups/`) |
+| `9. Configure menu sprites` | Fills in banners, buttons and cover art automatically |
+
+### Where to tweak the UI
+
+| What | Where |
+| --- | --- |
+| Menu position / size | `Assets/Resources/GameMenuCanvas.prefab` (double-click into prefab mode; runtime code never overrides layout) |
+| Colours / fonts / sprites / layout values | `Assets/Resources/UIStyleSettings.asset` (Inspector) |
+| Companion appearance and model | `UIStyleSettings.asset` → "AI 助手" section |
+| Menu wording | `Assets/Scripts/UI/GameMenuUI.cs` |
 
 ---
 
 ## ❓ FAQ
 
-**Can I play without API keys?**
+**Q: Can I play without any API keys?**
 
-Yes. Exploration, combat, gathering, quests, inventory, the shop, the skill tree and the
-multiple-choice exams all work offline. Only **AI explanation**, **AI illustration** and
-**voice grading** report that they are unconfigured.
+Yes. Exploration, combat, gathering, quests, inventory, shop, skill tree and the multiple-choice exam all
+work offline. Only AI explanations, AI illustrations and speech features will report missing keys.
 
-**It says "AI key not configured" — what now?**
+**Q: "AI key not configured" — what now?**
 
-Follow "Getting started → Configure API keys": create `Assets/Resources/api_keys.json` and fill it in,
-or set the environment variables and restart Unity.
+Follow "Quick start → Configure API keys" to create `Assets/Resources/api_keys.json`, or set the matching
+environment variables and restart Unity.
 
-**Speech recognition keeps failing?**
+**Q: Is the AI expensive to run?**
 
-Check, in order: microphone permission granted → an input device is present →
-`baiduApiKey` / `baiduSecretKey` are correct → the machine can reach `vop.baidu.com`.
-Recording is fixed at 16000 Hz, matching Baidu's requirement.
+- **Explanations and companion chat**: DeepSeek `deepseek-chat`, token-billed — a few cents for ten poems
+- **Illustrations**: Tongyi Wanxiang is billed per image (~¥0.25 each) — **the only notably costly part**
+- **Speech**: Baidu offers a free tier, then bills per call / per character
 
-**Why can't I see the virtual joystick in the editor?**
+To keep costs down, generate once and run `Tools → 诗词数据 → 4. Bake built-in content`. The content is then
+baked into assets and **costs nothing no matter how often you demo it**.
 
-That is intentional. The joystick and touch buttons are enabled only in device builds
-(non-`UNITY_STANDALONE`); the editor and desktop platforms hide them and use the keyboard.
+**Q: The companion says "I have no key yet".**
 
-**Chinese text or comments look garbled?**
+`deepseekKey` was not found. Check the JSON formatting in `Assets/Resources/api_keys.json`, or set the
+`POEMTEST_DEEPSEEK_KEY` environment variable and restart Unity.
 
-All C# scripts have been normalised to **UTF-8 with BOM**, and `.gitignore` now follows the full Unity
-rule set. If individual files still look wrong, check your editor and Git encoding settings and do not
-re-save scripts as GBK.
+**Q: Speech recognition or playback does nothing.**
+
+Check, in order: microphone permission → `baiduApiKey` / `baiduSecretKey` → whether the Baidu console app has
+**both "short speech recognition" and "speech synthesis" enabled** → whether the device can reach
+`aip.baidubce.com` / `vop.baidu.com` / `tsn.baidu.com`.
+
+**Q: The text model keeps timing out.**
+
+Press `F11` in game to run the **model connectivity diagnostics**. It tests candidate models one by one and
+prints ✅ available / ⚠️ rate-limited / ❌ timeout / ❌ model not supported on that endpoint. Adjust
+`Text Model` and `Text Api Mode` on `PoemManager` accordingly.
+
+**Q: Chinese text renders as boxes.**
+
+The project uses TextMesh Pro with a Chinese font asset. If boxes appear, assign a font containing Chinese
+glyphs in `UIStyleSettings` → `Font Asset`, or re-run the editor tool `0`.
+
+**Q: The virtual joystick is missing in the editor.**
+
+That is intentional. The joystick and touch buttons are only enabled on device; the editor and PC use the
+keyboard.
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Progress & roadmap
 
-The core loop is complete. Still in progress:
+**Done**
 
-- [ ] **Skill tree content**: all 24 nodes currently point at the same skill; they need to be split across attack / health / speed
-- [ ] **Stats panel**: crit rate, defence, dodge, mana and block are placeholders (they display a constant)
-- [ ] **Save system**: gold, inventory, quest progress and skill points are memory-only and reset on quit
-- [ ] **On-device mobile testing**: multi-touch gesture ownership for the virtual joystick
-- [ ] **Asset cleanup**: remove development-era test assets and drop `TextMesh Pro/Examples & Extras` from the build
-- [ ] **More content**: additional poems and question types (fill-in-the-blank, matching)
+- [x] **Save system**: three slots storing position, health, gold, EXP, inventory, quests, skill levels and exam progress
+- [x] **Offline-capable demo**: AI-generated poem content can be baked into built-in content, so a demo needs no network and costs nothing
+- [x] **Content source disclosure**: built-in / AI generated / cached badges
+- [x] **AI companion**: portrait, sprite animation, instruction-based dialogue, speech input, speech output
+- [x] **Mobile UI adaptation**: safe area, virtual joystick, reference-resolution scaling
+- [x] **Visual UI configuration**: menu is an editable prefab, styling centralised in `UIStyleSettings`
+
+**To do**
+
+- [ ] **Skill tree differentiation**: all 25 nodes currently share the same effect definitions (health / attack / speed) and need splitting by design intent
+- [ ] **Stats panel**: crit rate, defence, dodge, mana and block are still placeholders
+- [ ] **On-device mobile verification**: multi-touch joystick handling, recording sample rates and safe area need real-device testing
+- [ ] **Companion content moderation**: currently a local blocklist for demo purposes; a production build should call a server-side moderation API
+- [ ] **TTS caching**: identical text is currently synthesised repeatedly; a cache would help
+- [ ] **Asset cleanup**: remove development leftovers and drop `TextMesh Pro/Examples & Extras` from the build
+- [ ] **Content expansion**: more poems and more question types (fill-in-the-blank, matching)
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repository
+1. Fork this repository
 2. Create a `Feat_xxx` branch
 3. Commit your changes
-4. Open a pull request
+4. Open a Pull Request
 
-**Always check that you are not committing a key:**
+**Please self-check before committing and never commit keys:**
 
 ```bash
 git grep -nE "sk-[A-Za-z0-9]{16,}"
 ```
 
-Bug reports and ideas for new poetry gameplay are welcome in Issues.
+Issues with bug reports or new poetry gameplay ideas are welcome too.
 
 ---
 
-## 📄 License and credits
+## 📄 License & credits
 
-For the code, refer to the license statement in the repository root.
+For licensing of the code, please refer to the licence statement in the repository root.
 
-| Asset | Location | License |
+| Asset | Location | Licence |
 | --- | --- | --- |
-| NPinyin (Hanzi to Pinyin) | `Assets/Scripts/Plugins/NPinyin/` | See the original project |
+| NPinyin (hanzi to pinyin) | `Assets/Scripts/Plugins/NPinyin/` | See the original project |
 | Tiny Speech Indicators (@rehhouari / @pigeonivy) | `Assets/Sprites/UI/Tiny/` | CC0 |
 | TextMesh Pro | `Assets/TextMesh Pro/` | Unity Companion License |
 | Cinemachine | `Packages/manifest.json` | Unity Companion License |
-| Fonts `zpix SDF`, `unifont-17.0` | `Assets/Sprites/Fonts/` | Verify before release |
-| Remaining pixel art | `Assets/Sprites/` | Confirm provenance and licensing before release |
+| Fonts `zpix SDF`, `unifont-17.0` | `Assets/Sprites/Fonts/` | Verify each licence before release |
+| Remaining pixel art | `Assets/Sprites/` | Verify origin and licence before release |
 
-> For commercial use, verify the licensing of every asset listed above.
+> If you intend to use this commercially, please verify the licence of every asset listed above.
 
 ---
 
 ## 📚 Related documents
 
-- [README.md](README.md) — 中文介绍
-- [SECURITY.md](SECURITY.md) — Key management and security notes (**read this first**)
-- [docs/开发记录与修复清单.md](docs/开发记录与修复清单.md) — Architecture details, fix log and verification (Chinese)
+- [README.md](README.md) — 中文说明
+- [SECURITY.md](SECURITY.md) — key management and security notes (**read this first**)

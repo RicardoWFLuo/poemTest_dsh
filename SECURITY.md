@@ -6,8 +6,8 @@
 
 | 用途 | 服务 | 密钥（截断显示） |
 | --- | --- | --- |
-| 诗词释义（通义千问 `qwen-turbo`） | 阿里云百炼 DashScope | `sk-1715…` |
-| 诗词配图（通义万相 `wan2.6-t2i`） | 阿里云百炼 DashScope | `sk-4e99…` |
+| 诗词释义（通义千问 `qwen-turbo`，现已换用 DeepSeek） | 阿里云百炼 DashScope | `sk-1715…` |
+| 诗词配图（通义万相 `wan2.6-t2i`，现为 `wan2.7-image-pro`） | 阿里云百炼 DashScope | `sk-4e99…` |
 | 语音识别 API Key | 百度智能云 | `vmDfbcl…` |
 | 语音识别 Secret Key | 百度智能云 | `O30JQ3…` |
 
@@ -79,10 +79,11 @@ cp Assets/Resources/api_keys.example.json Assets/Resources/api_keys.json
 
 ```json
 {
-  "qwenTextKey": "阿里云百炼文本生成 API Key",
+  "qwenTextKey": "阿里云百炼文本生成 API Key（备用通道，可留空）",
   "qwenImageKey": "阿里云百炼文生图 API Key",
-  "baiduApiKey": "百度智能云语音识别 API Key",
-  "baiduSecretKey": "百度智能云语音识别 Secret Key"
+  "baiduApiKey": "百度智能云语音 API Key（识别 + 合成）",
+  "baiduSecretKey": "百度智能云语音 Secret Key",
+  "deepseekKey": "DeepSeek 官方 API Key（诗词释义 + AI 助手对话）"
 }
 ```
 
@@ -92,16 +93,20 @@ cp Assets/Resources/api_keys.example.json Assets/Resources/api_keys.json
 
 | 环境变量 | 对应密钥 |
 | --- | --- |
-| `POEMTEST_QWEN_TEXT_KEY` | 通义千问文本生成 |
+| `POEMTEST_DEEPSEEK_KEY` | DeepSeek 官方（诗词释义 + AI 助手） |
+| `POEMTEST_QWEN_TEXT_KEY` | 通义千问文本生成（备用通道） |
 | `POEMTEST_QWEN_IMAGE_KEY` | 通义万相文生图 |
-| `POEMTEST_BAIDU_API_KEY` | 百度语音识别 API Key |
-| `POEMTEST_BAIDU_SECRET_KEY` | 百度语音识别 Secret Key |
+| `POEMTEST_BAIDU_API_KEY` | 百度语音 API Key |
+| `POEMTEST_BAIDU_SECRET_KEY` | 百度语音 Secret Key |
 
 ### 兜底方式
 
 `PoemManager.textApiKey` / `imageApiKey`、`AudioSend.apiKey` / `secretKey` 仍保留为 Inspector
 公开字段，仅在上述两种方式都取不到时使用。**请勿在 Inspector 中填入真实密钥后提交场景文件**——
 历史泄露正是这样发生的。
+
+> `UIStyleSettings.asset` 里的 `Assistant Api Key Override` 也是同类兜底字段，
+> 但**它是会被提交的资源**，同样不要填真实密钥。
 
 读取逻辑见 [`Assets/Scripts/Config/ApiKeyConfig.cs`](Assets/Scripts/Config/ApiKeyConfig.cs)：
 环境变量 → `api_keys.json` → Inspector 字段。
@@ -125,11 +130,22 @@ git status --short | grep -Ei "api_keys\.json|\.keystore|key\.properties"
 ## 关于客户端内置密钥的进一步建议
 
 即使密钥没有进入 Git，**这类密钥最终仍会被打包进客户端**，任何拿到安装包的人都可以反编译提取。
+本项目在 Android 打包时，`Assets/Resources/api_keys.json` 会被**原样打进 APK**，
+用解包工具即可取出。因此：
+
+| 使用场景 | 建议 |
+| --- | --- |
+| 本地开发 / 自己演示 | 可接受，但演示结束后请更换密钥 |
+| 分发给他人 / 上架 | **必须**改为服务端中转 |
+
 如果本项目计划公开发布可执行包，建议进一步改造：
 
-- 不直接调用 DashScope / 百度语音，改为**由自己的后端中转**，密钥只保存在服务端；
+- 不直接调用 DeepSeek / DashScope / 百度语音，改为**由自己的后端中转**，密钥只保存在服务端；
 - 后端侧按用户 / 设备做调用频率限制与配额控制，防止密钥被滥用刷量；
 - 对客户端下发短期有效的临时凭证（如百度 `access_token`），而非长期密钥。
+
+> 补充：AI 助手的人设与环境变量、额度上限都在客户端可改，
+> 正式产品还应把**内容审核**与**调用配额**放到服务端，避免被绕过。
 
 ---
 
